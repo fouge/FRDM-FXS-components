@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bean>
+  <Header>
+    <Name>MPL3115A2</Name>
+    <Description>Driver for the Freescale Xtrinsic MPL3115A2 I2C Precision Altimeter.</Description>
+    <Author>Cyril Fougeray</Author>
+    <Version>01.000</Version>
+    <Icon>DEFAULT</Icon>
+    <TypesFiles>PE,MPL3115A2\MPL3115A2</TypesFiles>
+    <FileVersion>6</FileVersion>
+  </Header>
+  <Options>
+    <SaveInspectorTabsViewUIStyle>true</SaveInspectorTabsViewUIStyle>
+    <DemoDriver>no</DemoDriver>
+    <Category>CPU External Devices-Sensor</Category>
+    <BeanLevel>Low</BeanLevel>
+    <Copyright>For non-commercial use only.
+(c) Copyright Cyril Fougeray, 2014
+http://www.cyrilfougeray.com</Copyright>
+  </Options>
+  <PropertyList>
+    <Property>
+      <TCompNameItem>
+        <Name>Component Name</Name>
+        <Symbol>DeviceName</Symbol>
+        <Hint>Name of the component.</Hint>
+        <ItemLevel>BASIC</ItemLevel>
+        <EditLine>true</EditLine>
+        <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
+        <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
+        <UI_StringStyle>EDITBOX</UI_StringStyle>
+        <DefaultValue />
+      </TCompNameItem>
+    </Property>
+  </PropertyList>
+  <Links>
+    <EmptySection_DummyValue />
+  </Links>
+</Bean>
+
