@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UserTypes>
+  <Type>
+    <UsrType>TRetypeType</UsrType>
+    <Name>uint16_t</Name>
+    <Hint />
+    <Generate>no</Generate>
+    <Unique>no</Unique>
+    <GenerateHelp>no</GenerateHelp>
+    <PreparedHint>typedef word uint16_t ;\n</PreparedHint>
+    <Type>char</Type>
+  </Type>
+  <Type>
+    <UsrType>TRetypeType</UsrType>
+    <Name>uint8_t</Name>
+    <Hint />
+    <Generate>no</Generate>
+    <Unique>no</Unique>
+    <GenerateHelp>no</GenerateHelp>
+    <PreparedHint>typedef byte uint8_t ;\n</PreparedHint>
+    <Type>char</Type>
+  </Type>
+  <Type>
+    <UsrType>TRetypeType</UsrType>
+    <Name>int16_t</Name>
+    <Hint />
+    <Generate>no</Generate>
+    <Unique>no</Unique>
+    <GenerateHelp>no</GenerateHelp>
+    <PreparedHint>typedef int16_t int16_t ;\n</PreparedHint>
+    <Type>char</Type>
+  </Type>
+  <Type>
+    <UsrType>TRetypeType</UsrType>
+    <Name>int8_t</Name>
+    <Hint />
+    <Generate>no</Generate>
+    <Unique>no</Unique>
+    <GenerateHelp>no</GenerateHelp>
+    <PreparedHint>typedef int16_t int8_t ;\n</PreparedHint>
+    <Type>char</Type>
+  </Type>
+</UserTypes>
+
