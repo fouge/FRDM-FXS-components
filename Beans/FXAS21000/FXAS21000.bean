@@ -58,9 +58,9 @@ http://www.cyrilfougeray.com</Copyright>
     <Property>
       <TInhrLinkItem>
         <Name>I2C bus</Name>
-        <Symbol>I2C</Symbol>
+        <Symbol>I2C_FXAS_Interface</Symbol>
         <TypeSpec>FXAS21000/I2C</TypeSpec>
-        <Hint>Interface to I2C bus connected to the gyroscope</Hint>
+        <Hint>Interface to the I2C bus connected to the gyroscope</Hint>
         <ItemLevel>BASIC</ItemLevel>
         <EditLine>false</EditLine>
         <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
