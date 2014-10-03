@@ -30,7 +30,7 @@
         <Line>50 Hz</Line>
         <Line>12.5 Hz</Line>
         <Line>6.25 Hz</Line>
-        <Line>1.56</Line>
+        <Line>1.56 Hz</Line>
       </Items>
       <Hints lines_count="4">
         <Line>Sample frequency when in sleep mode to 50 Hz</Line>
@@ -51,8 +51,8 @@
       <Items lines_count="4">
         <Line>200 Hz</Line>
         <Line>100 Hz</Line>
-        <Line>50</Line>
-        <Line>12.5</Line>
+        <Line>50 Hz</Line>
+        <Line>12.5 Hz</Line>
       </Items>
       <Hints lines_count="4">
         <Line>Accelerometer Output Data Rate (ODR) set to 200Hz.</Line>

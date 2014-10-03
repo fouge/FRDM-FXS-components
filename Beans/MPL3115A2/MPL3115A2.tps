@@ -14,6 +14,22 @@
         <Line>0x60</Line>
       </Defines>
     </Type>
+    <Type>
+      <Type>TEnumSpec</Type>
+      <Name>typePropertyBarometerAltimeter</Name>
+      <Items lines_count="2">
+        <Line>Altimeter</Line>
+        <Line>Barometer</Line>
+      </Items>
+      <Hints lines_count="2">
+        <Line>Part is in Altimeter mode</Line>
+        <Line>Part is in Barometer mode</Line>
+      </Hints>
+      <Defines lines_count="2">
+        <Line>1</Line>
+        <Line>0</Line>
+      </Defines>
+    </Type>
   </Types>
 </TypesAndGlobals>
 

@@ -93,16 +93,37 @@
 
 %-ENDUSRTYPES
 %-BW_BEAN_CONSTANTS_START  - Do not make changes between lines (included this lines) marked with %-BW_BEAN_CONSTANTS_START and %-BW_BEAN_CONSTANTS_END
-%- No constants defined in the BeanWizard for this bean
 %-BW_BEAN_CONSTANTS_END
 %-BW_CUSTOM_USERTYPE_START
 %- Write your own types here ...
 %-  Example:
 %-    typedef int TMyInteger; 
 %-
+
+
+
+
 %-BW_CUSTOM_USERTYPE_END
 
 %-BW_DEFINITION_START
+%-*****************************************************************************************************
+%-BW_METHOD_BEGIN Init
+%ifdef Init
+%include Common\MPL3115A2Init.inc
+void %'ModuleName'%.%Init();
+%endif  %-Init
+%-BW_METHOD_END Init
+
+%-*****************************************************************************************************
+%-BW_METHOD_BEGIN WhoAmI
+%ifdef WhoAmI
+%include Common\MPL3115A2WhoAmI.inc
+uint8_t %'ModuleName'%.%WhoAmI(uint8_t *value);
+%define! Parvalue
+%define!  RetVal
+%endif  %-WhoAmI
+%-BW_METHOD_END WhoAmI
+
 %-************************************************************************************************************
 %-BW_DEFINITION_END
 /* END %ModuleName. */
@@ -142,6 +163,52 @@
 %- List of internal methods headers
 %-BW_INTERN_METHOD_DECL_END
 %-BW_IMPLEMENT_START
+%-*****************************************************************************************************
+%-BW_METHOD_BEGIN Init
+%ifdef Init
+%include Common\MPL3115A2Init.inc
+void %'ModuleName'%.%Init()
+{
+%CODE_BEGIN
+	uint8_t data;
+	uint8_t val;
+
+	/* Perform a reset */
+	data = %'ModuleName'_RST_BIT_MASK;
+	if(%@I2C_MPL_Interface@'ModuleName'%.WriteAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)%'ModuleName'_CTRL_REG_1, sizeof(%'ModuleName'_CTRL_REG_1), (uint8_t*)&data, sizeof(data)) != ERR_OK){
+		return ERR_FAILED;
+	}
+	
+	/* Wait for the reset to be completed. */
+	do{
+		%@I2C_MPL_Interface@'ModuleName'%.ReadByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, &val);
+	} while(val & %'ModuleName'_RST_BIT_MASK == 0x00);
+		
+
+	data = ALT_MODE;
+	if(%@I2C_MPL_Interface@'ModuleName'%.WriteAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)%'ModuleName'_CTRL_REG_1, sizeof(%'ModuleName'_CTRL_REG_1), (uint8_t*)&data, sizeof(data)) != ERR_OK){
+		return ERR_FAILED;
+	}
+%CODE_END
+}
+%endif %-Init
+%-BW_METHOD_END Init
+
+%-*****************************************************************************************************
+%-BW_METHOD_BEGIN WhoAmI
+%ifdef WhoAmI
+%define! Parvalue
+%define! RetVal
+%include Common\MPL3115A2WhoAmI.inc
+uint8_t %'ModuleName'%.%WhoAmI(uint8_t *value)
+{
+%CODE_BEGIN
+	return %@I2C@'ModuleName'%.ReadByteAddress8(%'ModuleName'%.I2C_ADDR, %'ModuleName'%.WHO_AM_I, value);
+%CODE_END
+}
+%endif %-WhoAmI
+%-BW_METHOD_END WhoAmI
+
 %-************************************************************************************************************
 %-BW_IMPLEMENT_END
 /* END %ModuleName. */

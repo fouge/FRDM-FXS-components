@@ -1435,7 +1435,7 @@
         <ReturnType>uint8_t</ReturnType>
         <RetHint>Error code, ERR_OK if everything is ok.</RetHint>
         <ParamCount>0</ParamCount>
-        <Scope>PRIVATE</Scope>
+        <Scope>PUBLISHED</Scope>
         <Declarations>
           <ANSIC>uint8_t #M#_#C#(void)</ANSIC>
         </Declarations>
