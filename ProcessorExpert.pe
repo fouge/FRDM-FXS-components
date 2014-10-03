@@ -3,8 +3,8 @@
   <Header>
     <Name>FRDM_FXS_Components</Name>
     <SavedBy>fouge</SavedBy>
-    <ModificationStamp>6</ModificationStamp>
-    <Date>2014-09-26</Date>
+    <ModificationStamp>8</ModificationStamp>
+    <Date>2014-10-02</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.9.0.RT6_b1411-0502</PEversion>
   </Header>
@@ -3584,7 +3584,7 @@
         <ItemSymbol>OnResetName</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Cpu_OnReset</Value>
+        <Value>%Cpu_OnReset</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>OnNMIINT</ItemSymbol>
@@ -3616,7 +3616,7 @@
         <ItemSymbol>OnHardFaultName</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Cpu_OnHardFault</Value>
+        <Value>%Cpu_OnHardFault</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>OnBusFault</ItemSymbol>
@@ -3632,7 +3632,7 @@
         <ItemSymbol>OnBusFaultName</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Cpu_OnBusFault</Value>
+        <Value>%Cpu_OnBusFault</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>OnUsageFault</ItemSymbol>
@@ -3648,7 +3648,7 @@
         <ItemSymbol>OnUsageFaultName</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Cpu_OnUsageFault</Value>
+        <Value>%Cpu_OnUsageFault</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>OnSupervisorCall</ItemSymbol>
@@ -3664,7 +3664,7 @@
         <ItemSymbol>OnSupervisorCallName</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Cpu_OnSupervisorCall</Value>
+        <Value>%Cpu_OnSupervisorCall</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>OnPendableService</ItemSymbol>
@@ -3680,7 +3680,7 @@
         <ItemSymbol>OnPendableServiceName</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Cpu_OnPendableService</Value>
+        <Value>%Cpu_OnPendableService</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>CPUCond0</ItemSymbol>
@@ -3701,7 +3701,7 @@
         <ItemSymbol>OnLossOfLockINTName</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Cpu_OnLossOfLockINT</Value>
+        <Value>%Cpu_OnLossOfLockINT</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>LossOfClockOSC0EvntCondGrp</ItemSymbol>
@@ -3723,7 +3723,7 @@
         <ItemSymbol>OnLossOfClockOSC0Name</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Cpu_OnLossOfClockOSC0</Value>
+        <Value>%Cpu_OnLossOfClockOSC0</Value>
         <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
       </ItemState>
       <ItemState>
@@ -3746,7 +3746,7 @@
         <ItemSymbol>OnLossOfClockRTCName</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Cpu_OnLossOfClockRTC</Value>
+        <Value>%Cpu_OnLossOfClockRTC</Value>
         <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
       </ItemState>
       <ItemState>
@@ -3769,7 +3769,7 @@
         <ItemSymbol>OnLossOfClockOSC1Name</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Cpu_OnLossOfClockOSC1</Value>
+        <Value>%Cpu_OnLossOfClockOSC1</Value>
         <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
       </ItemState>
       <ItemState>
@@ -3786,7 +3786,7 @@
         <ItemSymbol>OnLowVoltageINTName</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Cpu_OnLowVoltageINT</Value>
+        <Value>%Cpu_OnLowVoltageINT</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>OnLLSWakeUpINTCondGrp</ItemSymbol>
@@ -3807,7 +3807,7 @@
         <ItemSymbol>OnLLSWakeUpINTName</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Cpu_OnLLSWakeUpINT</Value>
+        <Value>%Cpu_OnLLSWakeUpINT</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>DDREvntCondGrp</ItemSymbol>
@@ -3829,7 +3829,7 @@
         <ItemSymbol>OnDDRINTName</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Cpu_OnDDRINT</Value>
+        <Value>%Cpu_OnDDRINT</Value>
         <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
       </ItemState>
     </Events>

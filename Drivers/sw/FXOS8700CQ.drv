@@ -125,14 +125,8 @@
 #define %'ModuleName'_F_READ_BIT_MASK 0x02
 
 // CTRL_REG1 constants (when in hybrid mode, frequencies (sleep & wake) are divided by 2)
-#define %'ModuleName'_ASLP_RATE_50		(0x0 << 6)	/* Sample frequency when in sleep mode */
-#define %'ModuleName'_ASLP_RATE_12_5	(0x1 << 6)
-#define %'ModuleName'_ASLP_RATE_6_25	(0x2 << 6)
-#define %'ModuleName'_ASLP_RATE_1_56	(0x3 << 6)
-
-#define %'ModuleName'_DR_200	(0x02 << 3)		/* Output Data Rate ODR */
-#define %'ModuleName'_DR_100	(0x03 << 3)
-#define %'ModuleName'_DR_50	(0x04 << 3)
+#define %'ModuleName'_ASLP_RATE				%FXO_ASLP_RATE	/* Sample frequency when in sleep mode */
+#define %'ModuleName'_DR							%FXO_ODR	/* Output Data Rate ODR */
 
 // CTRL_REG2 constants
 #define %'ModuleName'_MODS_NORMAL (0x0 << 0)		/* wake mode OSR */
@@ -797,12 +791,41 @@ uint8_t %'ModuleName'%.%Deinit(void)
 uint8_t %'ModuleName'%.%Init(void)
 {
 %CODE_BEGIN
+	uint8_t databyte;
+
 %if defined(CalibrateX1g) | defined(CalibrateY1g) | defined(CalibrateZ1g)
   sCalValues.NxOff = InitialCalibration.NxOff;
   sCalValues.NyOff = InitialCalibration.NyOff;
   sCalValues.NzOff = InitialCalibration.NzOff;
 %endif %- CalibrateY1g
-  return %@I2C@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, %'ModuleName'_ACTIVE_BIT_MASK); /* enable device */
+
+	if (%'ModuleName'%.WhoAmI(&databyte)!=ERR_OK) {
+		return ERR_FAILED;
+	}
+	if (databyte != %'ModuleName'_WHO_AM_I_VAL) {
+		return ERR_FAILED;
+	}
+
+	/* 	write 0100 0000 = 0x40 to accelerometer control register 2 to
+			reset the FXOS8700 and place it into Standby mode */
+	%'ModuleName'%.WriteReg8(%'ModuleName'_CTRL_REG_2, %'ModuleName'_CTRL_REG_2_MASK_RST);
+
+	%'ModuleName'%.Disable();
+	
+	
+	/* Control register 1
+	 * [7-6]: aslp_rate.
+	 * [5-3]: dr. (data rate)
+	 * [2]: lnoise=0 for low noise mode
+	 * [1]: f_read=0 for normal 16 bit reads
+	 * [0]: active=0 standby mode for the configuration
+	 */
+	if (%'ModuleName'%.WriteReg8(%'ModuleName'_CTRL_REG_1, (uint8_t)(%'ModuleName'_DR | %'ModuleName'_ASLP_RATE) ) != ERR_OK) {
+		return ERR_FAILED;
+	}
+
+  /* return %@I2C@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, %'ModuleName'_ACTIVE_BIT_MASK);*/ /* enable device */
+  return ERR_OK;
 %CODE_END
 }
 %endif %-Init

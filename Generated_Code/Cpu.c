@@ -7,7 +7,7 @@
 **     Version     : Component 01.006, Driver 01.04, CPU db: 3.00.000
 **     Datasheet   : KL26P121M48SF4RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2014-09-25, 20:35, # CodeGen: 0
+**     Date/Time   : 2014-09-29, 13:49, # CodeGen: 1
 **     Abstract    :
 **
 **     Settings    :
@@ -62,7 +62,6 @@
 #include "FreeRTOS.h" /* FreeRTOS interface */
 #include "HF1.h"
 #include "FRTOS1.h"
-#include "FX1.h"
 #include "TMOUT1.h"
 #include "CS1.h"
 #include "I2C0.h"
@@ -266,8 +265,6 @@ void PE_low_level_init(void)
   TMOUT1_Init();
   /* ### GenericI2C "GI2C0" init code ... */
   GI2C0_Init();
-  /* ### FXOS8700CQ "FX1" init code ... */
-  /* Write code here ... */
   /* ### LowPower "LP1" init code ... */
 }
   /* Flash configuration field */

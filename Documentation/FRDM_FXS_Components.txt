@@ -257,49 +257,6 @@ Module "FRTOS1"    (component FreeRTOS)
    - FRTOS1_Init -Low level initialization routine called from startup code. This method ensures that the tick timer is  not 
                 enabled.
 
-Module "FX1"       (component FXOS8700CQ)
-   - FX1_Disable -Disables the device with clearing the ACTIVE bit in the CTRL register 1
-   - FX1_isEnabled -Returns the status of the the ACTIVE bit in the CTRL register 1
-   - FX1_ReadReg8 -Reads an 8bit device register
-   - FX1_WriteReg8 -Write an 8bit device register
-   - FX1_GetX -Retrieves the value for the X axis. The value is adjusted with the zero calibration value (0 for 0 g, negative 
-                for negative acceleration and positive for positive acceleration).
-   - FX1_GetY -Retrieves the value for the Y axis. The value is adjusted with the zero calibration value (0 for 0 g, negative 
-                for negative acceleration and positive for positive acceleration).
-   - FX1_GetZ -Retrieves the value for the Z axis. The value is adjusted with the zero calibration value (0 for 0 g, negative 
-                for negative acceleration and positive for positive acceleration).
-   - FX1_GetRaw8XYZ -Returns in an array the x, y and z accelerometer as 8bit values.
-   - FX1_GetRawAccelMagXYZ -Returns in an array the x, y and z accelerometer data and x,y and z magnetometer data as 16bit 
-                values.
-   - FX1_CalibrateX1g -Performs a calibration of the sensor. It is assumed that the Y and Z sensors have 0 g, and the X sensor 
-                has 1 g.
-   - FX1_CalibrateY1g -Performs a calibration of the sensor. It is assumed that the Y and Z sensors have 0 g, and the X sensor 
-                has 1 g.
-   - FX1_CalibrateZ1g -Performs a calibration of the sensor. It is assumed that the X and Y sensors have 0 g, and the X sensor 
-                has 1 g.
-   - FX1_GetXmg -Returns the X value in mg
-   - FX1_GetYmg -Returns the Y value in mg
-   - FX1_GetZmg -Returns the Z value in mg
-   - FX1_MeasureGetRawX -Performs a measurement on X channel and returns the raw value.
-   - FX1_MeasureGetRawY -Performs a measurement on Y channel and returns the raw value.
-   - FX1_MeasureGetRawZ -Performs a measurement on Z channel and returns the raw value.
-   - FX1_GetXOffset -Returns the offset applied to the X value.
-   - FX1_GetYOffset -Returns the offset applied to the Y value.
-   - FX1_GetZOffset -Returns the offset applied to the Z value.
-   - FX1_GetX1gValue -Returns the value for 1g for channel  X.
-   - FX1_GetY1gValue -Returns the value for 1g for channel  Y.
-   - FX1_GetZ1gValue -Returns the value for 1g for channel  Z.
-   - FX1_SetFastMode -Turns the F_READ (Fast Read Mode) on or off
-   - FX1_WhoAmI -Returns the value of the WHO_AM_I (0x0D) register
-   - FX1_GetTemperature -Returns the temperature of the die as signed 8bit values in degree Celsius
-   - FX1_GetMagX -Returns the X magnetometer value.
-   - FX1_GetMagY -Returns the Y magnetometer value.
-   - FX1_GetMagZ -Returns the Z magnetometer value.
-   - FX1_MagneticSensorReset -Initiates a magnetic sensor reset cycle that will restore correct operation after exposure to an 
-                excessive magnetic field which exceeds the Full Scale Range but is less than the Maximum Applied Magnetic Field.
-   - FX1_Init -Initializes the device driver
-   - FX1_Deinit -Counterpart to Init() method.
-
 Module "TMOUT1"    (component Timeout)
    - TMOUT1_GetCounter -Initializes a new timeout counter and returns the handle to it. At the end, use LeaveCounter() to free 
                 up the resource.
