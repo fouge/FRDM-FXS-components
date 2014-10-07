@@ -181,6 +181,15 @@
 
 %-BW_DEFINITION_START
 %-*****************************************************************************************************
+%-BW_METHOD_BEGIN Init
+%ifdef Init
+%include Common\FXOS8700CQInit.inc
+uint8_t %'ModuleName'%.%Init();
+%define!  RetVal
+%endif  %-Init
+%-BW_METHOD_END Init
+
+%-*****************************************************************************************************
 %-BW_METHOD_BEGIN GetRawAccelMagXYZ
 %ifdef GetRawAccelMagXYZ
 %include Common\FXOS8700CQGetRawAccelMagXYZ.inc
@@ -210,13 +219,7 @@ uint8_t %'ModuleName'%.%Deinit(void);
 %-BW_METHOD_END Deinit
 
 %-*****************************************************************************************************
-%-BW_METHOD_BEGIN Init
-%ifdef Init
-uint8_t %'ModuleName'%.%Init(void);
-%define!  RetVal
-%include Common\FXOS8700CQInit.inc
-%endif  %-Init
-%-BW_METHOD_END Init
+
 
 %-************************************************************************************************************
 %-BW_METHOD_BEGIN CalibrateX1g
@@ -719,6 +722,67 @@ static uint8_t PrintHelp(const %@Shell@'ModuleName'%.StdIOType *io) {
 %-BW_INTERN_METHOD_DECL_END
 %-BW_IMPLEMENT_START
 %-*****************************************************************************************************
+%-BW_METHOD_BEGIN Init
+%ifdef Init
+%define! RetVal
+%include Common\FXOS8700CQInit.inc
+uint8_t %'ModuleName'%.%Init()
+{
+%CODE_BEGIN
+		uint8_t databyte;
+
+%if defined(CalibrateX1g) | defined(CalibrateY1g) | defined(CalibrateZ1g)
+  sCalValues.NxOff = InitialCalibration.NxOff;
+  sCalValues.NyOff = InitialCalibration.NyOff;
+  sCalValues.NzOff = InitialCalibration.NzOff;
+%endif %- CalibrateY1g
+
+	if (%'ModuleName'%.WhoAmI(&databyte)!=ERR_OK) {
+		return ERR_FAILED;
+	}
+	if (databyte != %'ModuleName'_WHO_AM_I_VAL) {
+		return ERR_FAILED;
+	}
+
+	/* 	write 0100 0000 = 0x40 to accelerometer control register 2 to
+			reset the FXOS8700 and place it into Standby mode */
+	%'ModuleName'%.WriteReg8(%'ModuleName'_CTRL_REG_2, %'ModuleName'_CTRL_REG_2_MASK_RST);
+
+	%'ModuleName'%.Disable();
+	
+	
+	/* Control register 1
+	 * [7-6]: aslp_rate.
+	 * [5-3]: dr. (data rate)
+	 * [2]: lnoise=0 for low noise mode
+	 * [1]: f_read=0 for normal 16 bit reads
+	 * [0]: active=0 standby mode for the configuration
+	 */
+	if (%'ModuleName'%.WriteReg8(%'ModuleName'_CTRL_REG_1, (uint8_t)(%'ModuleName'_DR | %'ModuleName'_ASLP_RATE) ) != ERR_OK) {
+		return ERR_FAILED;
+	}
+	
+	/* Accelerometer control register 2 to set power modes
+	 * [7] : Self Test
+	 * [6] : Reset
+	 * [5] : reserved
+	 * [3-4] : OSR selection in Sleep mode (accelero)
+	 * [2] : Auto-Sleep mode enable
+	 * [0-1] : OSR selection in Wake mode (accelero)
+	 */
+	if(%'ModuleName'%.WriteReg8(%'ModuleName'_CTRL_REG_2, (uint8_t)( %'ModuleName'_MODS_NORMAL | %'ModuleName'_SMODS_LOWPOWER ) & ~(%'ModuleName'_CTRL_REG_2_MASK_RST)) != ERR_OK){
+		return ERR_FAILED;
+	}
+	
+
+  /* return %@I2C@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, %'ModuleName'_ACTIVE_BIT_MASK);*/ /* enable device */
+  return ERR_OK;
+%CODE_END
+}
+%endif %-Init
+%-BW_METHOD_END Init
+
+%-*****************************************************************************************************
 %-BW_METHOD_BEGIN GetRawAccelMagXYZ
 %ifdef GetRawAccelMagXYZ
 %define! Parxyzijk
@@ -784,64 +848,7 @@ uint8_t %'ModuleName'%.%Deinit(void)
 %-BW_METHOD_END Deinit
 
 %-*****************************************************************************************************
-%-BW_METHOD_BEGIN Init
-%ifdef Init
-%define! RetVal
-%include Common\FXOS8700CQInit.inc
-uint8_t %'ModuleName'%.%Init(void)
-{
-%CODE_BEGIN
-	uint8_t databyte;
 
-%if defined(CalibrateX1g) | defined(CalibrateY1g) | defined(CalibrateZ1g)
-  sCalValues.NxOff = InitialCalibration.NxOff;
-  sCalValues.NyOff = InitialCalibration.NyOff;
-  sCalValues.NzOff = InitialCalibration.NzOff;
-%endif %- CalibrateY1g
-
-	if (%'ModuleName'%.WhoAmI(&databyte)!=ERR_OK) {
-		return ERR_FAILED;
-	}
-	if (databyte != %'ModuleName'_WHO_AM_I_VAL) {
-		return ERR_FAILED;
-	}
-
-	/* 	write 0100 0000 = 0x40 to accelerometer control register 2 to
-			reset the FXOS8700 and place it into Standby mode */
-	%'ModuleName'%.WriteReg8(%'ModuleName'_CTRL_REG_2, %'ModuleName'_CTRL_REG_2_MASK_RST);
-
-	%'ModuleName'%.Disable();
-	
-	
-	/* Control register 1
-	 * [7-6]: aslp_rate.
-	 * [5-3]: dr. (data rate)
-	 * [2]: lnoise=0 for low noise mode
-	 * [1]: f_read=0 for normal 16 bit reads
-	 * [0]: active=0 standby mode for the configuration
-	 */
-	if (%'ModuleName'%.WriteReg8(%'ModuleName'_CTRL_REG_1, (uint8_t)(%'ModuleName'_DR | %'ModuleName'_ASLP_RATE) ) != ERR_OK) {
-		return ERR_FAILED;
-	}
-	
-	/* Accelerometer control register 2 to set power modes
-	 * [7] : Self Test
-	 * [6] : Reset
-	 * [5] : reserved
-	 * [3-4] : OSR selection in Sleep mode (accelero)
-	 * [2] : Auto-Sleep mode enable
-	 * [0-1] : OSR selection in Wake mode (accelero)
-	 */
-	if(%'ModuleName'%.WriteReg8(%'ModuleName'_CTRL_REG_2, (uint8_t)( %'ModuleName'_MODS_NORMAL | %'ModuleName'_SMODS_LOWPOWER ) & ~(%'ModuleName'_CTRL_REG_2_MASK_RST)) != ERR_OK){
-		return ERR_FAILED;
-	}
-
-  /* return %@I2C@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, %'ModuleName'_ACTIVE_BIT_MASK);*/ /* enable device */
-  return ERR_OK;
-%CODE_END
-}
-%endif %-Init
-%-BW_METHOD_END Init
 
 %-************************************************************************************************************
 %-BW_METHOD_BEGIN CalibrateX1g
@@ -1265,7 +1272,7 @@ uint8_t %'ModuleName'%.%Enable(void)
   %endif
     return res;
   }
-  if(val & FX1_ACTIVE_BIT_MASK)
+  if(val & %'ModuleName'_ACTIVE_BIT_MASK)
 	  return ERR_OK;
 
   val |= %'ModuleName'_ACTIVE_BIT_MASK; /* enable device */
@@ -1290,7 +1297,7 @@ uint8_t %'ModuleName'%.%Disable(void)
   %endif
     return res;
   }
-  if((val & FX1_ACTIVE_BIT_MASK) == 0)
+  if((val & %'ModuleName'_ACTIVE_BIT_MASK) == 0)
 	  return ERR_OK;
 
   val &= ~%'ModuleName'_ACTIVE_BIT_MASK; /* disable device */

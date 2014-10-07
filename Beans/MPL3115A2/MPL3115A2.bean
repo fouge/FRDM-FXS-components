@@ -92,6 +92,67 @@ http://www.cyrilfougeray.com</Copyright>
         <TypeAssignment>BEAN_FILE</TypeAssignment>
       </TEnumItem>
     </Property>
+    <Property>
+      <TEnumItem>
+        <Name>Oversampling Ratio (OSR)</Name>
+        <Symbol>OSR</Symbol>
+        <TypeSpec>typePropertyOSR</TypeSpec>
+        <Hint>These bits select the oversampling ratio</Hint>
+        <ItemLevel>BASIC</ItemLevel>
+        <EditLine>true</EditLine>
+        <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
+        <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
+        <UI_EnumStyle>COMBO</UI_EnumStyle>
+        <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
+        <DefaultIndex>0</DefaultIndex>
+        <TextValueIndex>true</TextValueIndex>
+        <RuntimeProperty>false</RuntimeProperty>
+        <CanDelete>false</CanDelete>
+        <IconPopup>false</IconPopup>
+        <TypeAssignment>BEAN_FILE</TypeAssignment>
+      </TEnumItem>
+    </Property>
+    <Property>
+      <TBoolItem>
+        <Name>One shot mode</Name>
+        <Symbol>OST_MODE</Symbol>
+        <TypeSpec>typeYesNo</TypeSpec>
+        <Hint>Get data using OST bit (FIFO disabled)</Hint>
+        <ItemLevel>BASIC</ItemLevel>
+        <EditLine>false</EditLine>
+        <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
+        <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
+        <UI_BoolStyle>CHECKBOX</UI_BoolStyle>
+        <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
+        <DefaultIndex>0</DefaultIndex>
+        <TextValueIndex>true</TextValueIndex>
+        <RuntimeProperty>false</RuntimeProperty>
+        <CanDelete>false</CanDelete>
+        <IconPopup>false</IconPopup>
+        <DefaultValue>true</DefaultValue>
+        <Popup>false</Popup>
+      </TBoolItem>
+    </Property>
+    <Property>
+      <TEnumItem>
+        <Name>Time step</Name>
+        <Symbol>TIME_STEP</Symbol>
+        <TypeSpec>typePropertyTimeStep</TypeSpec>
+        <Hint>Auto Acquisition Time Step</Hint>
+        <ItemLevel>BASIC</ItemLevel>
+        <EditLine>true</EditLine>
+        <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
+        <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
+        <UI_EnumStyle>COMBO</UI_EnumStyle>
+        <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
+        <DefaultIndex>0</DefaultIndex>
+        <TextValueIndex>true</TextValueIndex>
+        <RuntimeProperty>false</RuntimeProperty>
+        <CanDelete>false</CanDelete>
+        <IconPopup>false</IconPopup>
+        <TypeAssignment>BEAN_FILE</TypeAssignment>
+      </TEnumItem>
+    </Property>
   </PropertyList>
   <MethodList>
     <Method>
@@ -150,9 +211,43 @@ http://www.cyrilfougeray.com</Copyright>
         <PublicMethod>true</PublicMethod>
         <IsAssembler>false</IsAssembler>
         <InDefinition>true</InDefinition>
-        <ReturnType>void</ReturnType>
-        <RetHint />
+        <ReturnType>uint8_t</ReturnType>
+        <RetHint>Error code.</RetHint>
         <ParamCount>0</ParamCount>
+        <Scope>PRIVATE</Scope>
+      </TMthdItem>
+    </Method>
+    <Method>
+      <TMthdItem>
+        <Name>getAltitude</Name>
+        <Symbol>getAltitude</Symbol>
+        <TypeSpec>typeMethod</TypeSpec>
+        <Hint>Get altitude.</Hint>
+        <ItemLevel>BASIC</ItemLevel>
+        <EditLine>false</EditLine>
+        <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
+        <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
+        <UI_BoolStyle>DROPDOWN</UI_BoolStyle>
+        <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
+        <DefaultIndex>0</DefaultIndex>
+        <TextValueIndex>true</TextValueIndex>
+        <RuntimeProperty>false</RuntimeProperty>
+        <CanDelete>false</CanDelete>
+        <IconPopup>false</IconPopup>
+        <DefaultValue>true</DefaultValue>
+        <Popup>false</Popup>
+        <PublicMethod>true</PublicMethod>
+        <IsAssembler>false</IsAssembler>
+        <InDefinition>true</InDefinition>
+        <ReturnType>uint8_t</ReturnType>
+        <RetHint>Error code.</RetHint>
+        <ParamCount>1</ParamCount>
+        <Parameter>
+          <ParName>altitude</ParName>
+          <ParType>char*</ParType>
+          <ParPassing>Value</ParPassing>
+          <ParHint>Altitude in meter.</ParHint>
+        </Parameter>
         <Scope>PRIVATE</Scope>
       </TMthdItem>
     </Method>

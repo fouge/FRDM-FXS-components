@@ -600,18 +600,6 @@ Initiates a magnetic sensor reset cycle that will restore correct operation afte
 </li></ul><br />
 </li>
 <li>
-<a name="Init">
-<b>Init -</b>
-</a>
-Initializes the device driver
-<ul>
-<!---VER_SPEC #ANSIC#  DON'T CHANGE THIS LINE-->
-<br /><i>ANSIC prototype:</i> uint8_t Init(void)<br />
-<!---VER_SPEC_END  DON'T CHANGE THIS LINE-->
-<li><i>Return value:uint8_t</i> - Error code, ERR_OK if everything is ok.
-</li></ul><br />
-</li>
-<li>
 <a name="Deinit">
 <b>Deinit -</b>
 </a>
@@ -634,6 +622,18 @@ Returns in an array the x, y and z accelerometer data as 16bit values and x, y a
 <!---VER_SPEC_END  DON'T CHANGE THIS LINE-->
 <li><i>xyzijk: Pointer to int16_t</i> - Pointer to an array of 6 signed 16bit  values which are used to return the accelerometer and magnetometer values.</li>
 <li><i>Return value:uint8_t</i> - Error code, ERR_OK for no error.
+</li></ul><br />
+</li>
+<li>
+<a name="Init">
+<b>Init -</b>
+</a>
+Initializes the device driver
+<ul>
+<!---VER_SPEC #ANSIC#  DON'T CHANGE THIS LINE-->
+<br /><i>ANSIC prototype:</i> uint8_t Init(void)<br />
+<!---VER_SPEC_END  DON'T CHANGE THIS LINE-->
+<li><i>Return value:uint8_t</i> - Error code, ERR_OK if everything is ok.
 </li></ul><br />
 </li>
 <!--END_CDE_METHODS-->

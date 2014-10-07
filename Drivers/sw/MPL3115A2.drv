@@ -100,17 +100,39 @@
 %-    typedef int TMyInteger; 
 %-
 
+#define %'ModuleName'_I2C_ADDR   (%I2CSlaveAddress) /* I2C slave device address as set in the properties */
 
+
+/* Register addresses */
+#define %'ModuleName'_CTRL_REG_1 	0x26
+#define %'ModuleName'_CTRL_REG_2	0x27
+#define %'ModuleName'_WHO_AM_I  	0x0C    /* Who am I register, set to 0xC4 by default */
+
+
+#define %'ModuleName'_ACTIVE_MODE		(1<<0)
+#define %'ModuleName'_STANDBY_MODE	(0)
+#define %'ModuleName'_RST_BIT_MASK 	(1<<2)
 
 
 %-BW_CUSTOM_USERTYPE_END
 
 %-BW_DEFINITION_START
 %-*****************************************************************************************************
+%-BW_METHOD_BEGIN getAltitude
+%ifdef getAltitude
+%include Common\MPL3115A2getAltitude.inc
+uint8_t %'ModuleName'%.%getAltitude(char* altitude);
+%define! Paraltitude
+%define!  RetVal
+%endif  %-getAltitude
+%-BW_METHOD_END getAltitude
+
+%-*****************************************************************************************************
 %-BW_METHOD_BEGIN Init
 %ifdef Init
 %include Common\MPL3115A2Init.inc
-void %'ModuleName'%.%Init();
+uint8_t %'ModuleName'%.%Init();
+%define!  RetVal
 %endif  %-Init
 %-BW_METHOD_END Init
 
@@ -164,10 +186,26 @@ uint8_t %'ModuleName'%.%WhoAmI(uint8_t *value);
 %-BW_INTERN_METHOD_DECL_END
 %-BW_IMPLEMENT_START
 %-*****************************************************************************************************
+%-BW_METHOD_BEGIN getAltitude
+%ifdef getAltitude
+%define! Paraltitude
+%define! RetVal
+%include Common\MPL3115A2getAltitude.inc
+uint8_t %'ModuleName'%.%getAltitude(char* altitude)
+{
+%CODE_BEGIN
+	/******Method is not fully implemented if you can see this comment*******/
+%CODE_END
+}
+%endif %-getAltitude
+%-BW_METHOD_END getAltitude
+
+%-*****************************************************************************************************
 %-BW_METHOD_BEGIN Init
 %ifdef Init
+%define! RetVal
 %include Common\MPL3115A2Init.inc
-void %'ModuleName'%.%Init()
+uint8_t %'ModuleName'%.%Init()
 {
 %CODE_BEGIN
 	uint8_t data;
@@ -184,11 +222,22 @@ void %'ModuleName'%.%Init()
 		%@I2C_MPL_Interface@'ModuleName'%.ReadByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, &val);
 	} while(val & %'ModuleName'_RST_BIT_MASK == 0x00);
 		
-
-	data = ALT_MODE;
+	/* Sensor is in Standby mode*/
+	
+	/* Setting the Time Step */
+	data = %TIME_STEP; /* After a reset, CTRL_REG_2 = 0 so we can write directly the desired value*/
+	if(%@I2C_MPL_Interface@'ModuleName'%.WriteAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)%'ModuleName'_CTRL_REG_2, sizeof(%'ModuleName'_CTRL_REG_2), (uint8_t*)&data, sizeof(data)) != ERR_OK){
+		return ERR_FAILED;
+	}
+	
+	
+	/* Set in altimeter mode, set the Output Sample Rate (OSR) */
+	data = %ALT_MODE | %OSR | (%OST_MODE ? %'ModuleName'_STANDBY_MODE : %'ModuleName'_ACTIVE_MODE) ; /* After a reset, CTRL_REG_1 = 0 so we can write directly the desired value */
 	if(%@I2C_MPL_Interface@'ModuleName'%.WriteAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)%'ModuleName'_CTRL_REG_1, sizeof(%'ModuleName'_CTRL_REG_1), (uint8_t*)&data, sizeof(data)) != ERR_OK){
 		return ERR_FAILED;
 	}
+	
+	return ERR_OK;
 %CODE_END
 }
 %endif %-Init
@@ -203,7 +252,7 @@ void %'ModuleName'%.%Init()
 uint8_t %'ModuleName'%.%WhoAmI(uint8_t *value)
 {
 %CODE_BEGIN
-	return %@I2C@'ModuleName'%.ReadByteAddress8(%'ModuleName'%.I2C_ADDR, %'ModuleName'%.WHO_AM_I, value);
+	return %@I2C_MPL_Interface@'ModuleName'%.ReadByteAddress8(%'ModuleName'%.I2C_ADDR, %'ModuleName'%.WHO_AM_I, value);
 %CODE_END
 }
 %endif %-WhoAmI
