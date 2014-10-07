@@ -56,9 +56,9 @@
       </Items>
       <Hints lines_count="4">
         <Line>Accelerometer Output Data Rate (ODR) set to 200Hz.</Line>
-        <Line>Accelerometer Output Data Rate (ODR) set to 200Hz.</Line>
-        <Line>Accelerometer Output Data Rate (ODR) set to 200Hz.</Line>
-        <Line>Accelerometer Output Data Rate (ODR) set to 200Hz.</Line>
+        <Line>Accelerometer Output Data Rate (ODR) set to 100Hz.</Line>
+        <Line>Accelerometer Output Data Rate (ODR) set to 50Hz.</Line>
+        <Line>Accelerometer Output Data Rate (ODR) set to 12.5Hz.</Line>
       </Hints>
       <Defines lines_count="4">
         <Line>(0x02 &lt;&lt; 3)</Line>

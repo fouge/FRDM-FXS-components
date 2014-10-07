@@ -100,17 +100,28 @@
 %-    typedef int TMyInteger; 
 %-
 
-#define %'ModuleName'_I2C_ADDR   (%I2CSlaveAddress) /* I2C slave device address as set in the properties */
+#define %'ModuleName'_I2C_ADDR		(%I2CSlaveAddress) /* I2C slave device address as set in the properties */
+#define %'ModuleName'_OST_MODE		%OST_MODE
+#define %'ModuleName'_ALT_MODE		(%ALT_MODE)
+#define %'ModuleName'_OSR				%OSR
+#define %'ModuleName'_FIFO_MODE		%FIFO_MODE
 
+%if defined(TIME_STEP)
+#define %'ModuleName'_TIMESTEP	%TIME_STEP
+%endif
+
+#if %'ModuleName'_FIFO_MODE
+#error FIFO not implemented yet.
+#define %'ModuleName'_SBYB_MODE	(1<<0) /* Active mode */
+#else
+#define %'ModuleName'_SBYB_MODE	0
+#endif
 
 /* Register addresses */
 #define %'ModuleName'_CTRL_REG_1 	0x26
 #define %'ModuleName'_CTRL_REG_2	0x27
 #define %'ModuleName'_WHO_AM_I  	0x0C    /* Who am I register, set to 0xC4 by default */
 
-
-#define %'ModuleName'_ACTIVE_MODE		(1<<0)
-#define %'ModuleName'_STANDBY_MODE	(0)
 #define %'ModuleName'_RST_BIT_MASK 	(1<<2)
 
 
@@ -118,14 +129,14 @@
 
 %-BW_DEFINITION_START
 %-*****************************************************************************************************
-%-BW_METHOD_BEGIN getAltitude
-%ifdef getAltitude
-%include Common\MPL3115A2getAltitude.inc
-uint8_t %'ModuleName'%.%getAltitude(char* altitude);
+%-BW_METHOD_BEGIN getAltitudeOST
+%ifdef getAltitudeOST
+%include Common\MPL3115A2getAltitudeOST.inc
+uint8_t %'ModuleName'%.%getAltitudeOST(char* altitude);
 %define! Paraltitude
 %define!  RetVal
-%endif  %-getAltitude
-%-BW_METHOD_END getAltitude
+%endif  %-getAltitudeOST
+%-BW_METHOD_END getAltitudeOST
 
 %-*****************************************************************************************************
 %-BW_METHOD_BEGIN Init
@@ -186,19 +197,19 @@ uint8_t %'ModuleName'%.%WhoAmI(uint8_t *value);
 %-BW_INTERN_METHOD_DECL_END
 %-BW_IMPLEMENT_START
 %-*****************************************************************************************************
-%-BW_METHOD_BEGIN getAltitude
-%ifdef getAltitude
+%-BW_METHOD_BEGIN getAltitudeOST
+%ifdef getAltitudeOST
 %define! Paraltitude
 %define! RetVal
-%include Common\MPL3115A2getAltitude.inc
-uint8_t %'ModuleName'%.%getAltitude(char* altitude)
+%include Common\MPL3115A2getAltitudeOST.inc
+uint8_t %'ModuleName'%.%getAltitudeOST(char* altitude)
 {
 %CODE_BEGIN
 	/******Method is not fully implemented if you can see this comment*******/
 %CODE_END
 }
-%endif %-getAltitude
-%-BW_METHOD_END getAltitude
+%endif %-getAltitudeOST
+%-BW_METHOD_END getAltitudeOST
 
 %-*****************************************************************************************************
 %-BW_METHOD_BEGIN Init
@@ -224,15 +235,16 @@ uint8_t %'ModuleName'%.%Init()
 		
 	/* Sensor is in Standby mode*/
 	
+#ifdef %'ModuleName'_TIMESTEP
 	/* Setting the Time Step */
-	data = %TIME_STEP; /* After a reset, CTRL_REG_2 = 0 so we can write directly the desired value*/
+	data = %'ModuleName'_TIMESTEP; /* After a reset, CTRL_REG_2 = 0 so we can write directly the desired value*/
 	if(%@I2C_MPL_Interface@'ModuleName'%.WriteAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)%'ModuleName'_CTRL_REG_2, sizeof(%'ModuleName'_CTRL_REG_2), (uint8_t*)&data, sizeof(data)) != ERR_OK){
 		return ERR_FAILED;
 	}
-	
-	
-	/* Set in altimeter mode, set the Output Sample Rate (OSR) */
-	data = %ALT_MODE | %OSR | (%OST_MODE ? %'ModuleName'_STANDBY_MODE : %'ModuleName'_ACTIVE_MODE) ; /* After a reset, CTRL_REG_1 = 0 so we can write directly the desired value */
+#endif
+
+	/* Set in altimeter/barometer mode and set the Output Sample Rate (OSR) */
+	data |= %'ModuleName'_ALT_MODE | %'ModuleName'_OSR | %'ModuleName'_SBYB_MODE ; /* After a reset, CTRL_REG_1 = 0 so we can write directly the desired value */
 	if(%@I2C_MPL_Interface@'ModuleName'%.WriteAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)%'ModuleName'_CTRL_REG_1, sizeof(%'ModuleName'_CTRL_REG_1), (uint8_t*)&data, sizeof(data)) != ERR_OK){
 		return ERR_FAILED;
 	}
