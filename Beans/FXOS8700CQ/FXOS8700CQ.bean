@@ -98,27 +98,6 @@
       </TIntgItem>
     </Property>
     <Property>
-      <TBoolItem>
-        <Name>Hybrid Mode</Name>
-        <Symbol>HYBRID</Symbol>
-        <TypeSpec>typeYesNo</TypeSpec>
-        <Hint>Hybrid mode, both accelerometer and magnetometer sensors are active</Hint>
-        <ItemLevel>BASIC</ItemLevel>
-        <EditLine>false</EditLine>
-        <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
-        <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
-        <UI_BoolStyle>CHECKBOX</UI_BoolStyle>
-        <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
-        <DefaultIndex>0</DefaultIndex>
-        <TextValueIndex>true</TextValueIndex>
-        <RuntimeProperty>false</RuntimeProperty>
-        <CanDelete>false</CanDelete>
-        <IconPopup>false</IconPopup>
-        <DefaultValue>true</DefaultValue>
-        <Popup>false</Popup>
-      </TBoolItem>
-    </Property>
-    <Property>
       <TEnumItem>
         <Name>Output Data Rate</Name>
         <Symbol>FXO_ODR</Symbol>
@@ -157,6 +136,48 @@
         <IconPopup>false</IconPopup>
         <TypeAssignment>BEAN_FILE</TypeAssignment>
       </TEnumItem>
+    </Property>
+    <Property>
+      <TEnumItem>
+        <Name>FIFO Operating Mode</Name>
+        <Symbol>FIFO_MODE</Symbol>
+        <TypeSpec>typePropertyFIFOMode</TypeSpec>
+        <Hint>32-sample FIFO buffer operating mode.</Hint>
+        <ItemLevel>BASIC</ItemLevel>
+        <EditLine>true</EditLine>
+        <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
+        <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
+        <UI_EnumStyle>COMBO</UI_EnumStyle>
+        <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
+        <DefaultIndex>0</DefaultIndex>
+        <TextValueIndex>true</TextValueIndex>
+        <RuntimeProperty>false</RuntimeProperty>
+        <CanDelete>false</CanDelete>
+        <IconPopup>false</IconPopup>
+        <TypeAssignment>BEAN_FILE</TypeAssignment>
+      </TEnumItem>
+    </Property>
+    <Property>
+      <TBoolGrupItem>
+        <Name>Magnetometer</Name>
+        <Symbol>MAGNETOMETER_USAGE</Symbol>
+        <TypeSpec>typeYesNo</TypeSpec>
+        <Hint>Magnetometer data is measured. When activated, the part is in HYBRID mode.</Hint>
+        <ItemLevel>BASIC</ItemLevel>
+        <BoldName>true</BoldName>
+        <EditLine>false</EditLine>
+        <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
+        <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
+        <UI_GroupStyle>GROUP</UI_GroupStyle>
+        <UI_Layout>DEFAULT</UI_Layout>
+        <UI_NumColumnsInWrappedLayout>4</UI_NumColumnsInWrappedLayout>
+        <UI_ValueSelectionStyle>CHECKBOX</UI_ValueSelectionStyle>
+        <Description>yes</Description>
+        <Expanded>Yes</Expanded>
+        <DefaultValue>true</DefaultValue>
+        <DefineSymbol>TEXT_VAL</DefineSymbol>
+        <IfDisabled>setNOTHING</IfDisabled>
+      </TBoolGrupItem>
     </Property>
     <Property>
       <TBoolGrupItem>
@@ -300,28 +321,6 @@
             </TInhrLinkItem>
           </GrupItem>
         </Children>
-      </TBoolGrupItem>
-    </Property>
-    <Property>
-      <TBoolGrupItem>
-        <Name>Magnetometer Settings</Name>
-        <Symbol>MAG_SETTINGS</Symbol>
-        <TypeSpec>typeYesNo</TypeSpec>
-        <Hint />
-        <ItemLevel>BASIC</ItemLevel>
-        <BoldName>true</BoldName>
-        <EditLine>false</EditLine>
-        <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
-        <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
-        <UI_GroupStyle>TAB</UI_GroupStyle>
-        <UI_Layout>DEFAULT</UI_Layout>
-        <UI_NumColumnsInWrappedLayout>4</UI_NumColumnsInWrappedLayout>
-        <UI_ValueSelectionStyle>CHECKBOX</UI_ValueSelectionStyle>
-        <Description>yes</Description>
-        <Expanded>Yes</Expanded>
-        <DefaultValue>true</DefaultValue>
-        <DefineSymbol>YES_NO</DefineSymbol>
-        <IfDisabled>setNOTHING</IfDisabled>
       </TBoolGrupItem>
     </Property>
   </PropertyList>

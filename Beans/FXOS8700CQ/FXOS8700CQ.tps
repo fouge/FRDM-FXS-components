@@ -55,16 +55,39 @@
         <Line>12.5 Hz</Line>
       </Items>
       <Hints lines_count="4">
-        <Line>Accelerometer Output Data Rate (ODR) set to 200Hz.</Line>
-        <Line>Accelerometer Output Data Rate (ODR) set to 100Hz.</Line>
-        <Line>Accelerometer Output Data Rate (ODR) set to 50Hz.</Line>
-        <Line>Accelerometer Output Data Rate (ODR) set to 12.5Hz.</Line>
+        <Line>Sample Output Data Rate (ODR) set to 200Hz.</Line>
+        <Line>Sample Output Data Rate (ODR) set to 100Hz.</Line>
+        <Line>Sample Output Data Rate (ODR) set to 50Hz.</Line>
+        <Line>Sample Output Data Rate (ODR) set to 12.5Hz.</Line>
       </Hints>
       <Defines lines_count="4">
         <Line>(0x02 &lt;&lt; 3)</Line>
         <Line>(0x03 &lt;&lt; 3)</Line>
         <Line>(0x04 &lt;&lt; 3)</Line>
         <Line>(0x04 &lt;&lt; 3)</Line>
+      </Defines>
+    </Type>
+    <Type>
+      <Type>TEnumSpec</Type>
+      <Name>typePropertyFIFOMode</Name>
+      <Items lines_count="4">
+        <Line>Disabled</Line>
+        <Line>Circular</Line>
+        <Line>Fill</Line>
+        <Line>Trigger</Line>
+      </Items>
+      <Hints lines_count="4">
+        <Line>FIFO is disabled.</Line>
+        <Line>FIFO contains the most recent samples when overflowed (circular buffer). Oldest sample is discarded to be
+replaced by new sample.</Line>
+        <Line>FIFO stops accepting new samples when overflowed.</Line>
+        <Line>FIFO trigger mode.</Line>
+      </Hints>
+      <Defines lines_count="4">
+        <Line>(0x00&lt;&lt;6)</Line>
+        <Line>(0x01&lt;&lt;6)</Line>
+        <Line>(0x02&lt;&lt;6)</Line>
+        <Line>(0x03&lt;&lt;6)</Line>
       </Defines>
     </Type>
   </Types>

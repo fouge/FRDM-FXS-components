@@ -314,8 +314,6 @@ uint8_t %'ModuleName'%.%Enable()
 uint8_t %'ModuleName'%.%GetRawXYZ(int16_t *xyz)
 {
 %CODE_BEGIN
-	/******Method is not fully implemented if you can see this comment*******/
-	
 	static const uint8_t addr = FXA_OUT_X_MSB;
  	uint8_t rawXyz[6];
  	uint8_t res;
@@ -340,25 +338,31 @@ uint8_t %'ModuleName'%.%GetRawXYZ(int16_t *xyz)
 uint8_t %'ModuleName'%.%Init()
 {
 %CODE_BEGIN
-	/******Method is not fully implemented if you can see this comment*******/
 	static uint8_t data;
 	uint8_t val;
+
+	if(%'ModuleName'%.WhoAmI(&val) != ERR_OK){
+		return ERR_FAILED;
+	}
+	if (val!=FXA_WHO_AM_I_VAL) {
+		return ERR_FAILED;
+	}
 	
 	/* Perform a reset */
 	data = FXA_RST_BIT_MASK;
-	if(%@I2C_FXAS_Interface@'ModuleName'%.WriteAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)FXA_CTRL_REG_1, sizeof(FXA_CTRL_REG_1), (uint8_t*)&data, sizeof(data)) != ERR_OK){
+	if(%@I2C_FXAS_Interface@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, FXA_CTRL_REG_1, data) != ERR_OK){
 		return ERR_FAILED;
 	}
 	
 	/* Wait for the reset to be completed. */
 	do{
 		%@I2C_FXAS_Interface@'ModuleName'%.ReadByteAddress8(%'ModuleName'_I2C_ADDR, FXA_CTRL_REG_1, &val);
-	}while(val & FXA_RST_BIT_MASK == 0x00);
+	}while(val && FXA_RST_BIT_MASK);
 	
 	
 	/* Set Output Data Rate (ODR) and Ready mode */
 	data = FXA_ODR | FXA_READY_MODE;
-	if(%@I2C_FXAS_Interface@'ModuleName'%.WriteAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)FXA_CTRL_REG_1, sizeof(FXA_CTRL_REG_1), (uint8_t*)&data, sizeof(data)) != ERR_OK){
+	if(%@I2C_FXAS_Interface@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, FXA_CTRL_REG_1, data) != ERR_OK){
 		return ERR_FAILED;
 	}
 	

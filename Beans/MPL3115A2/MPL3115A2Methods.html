@@ -226,15 +226,27 @@ Returns the value of the WHO_AM_I register (0xC4)
 </li></ul><br />
 </li>
 <li>
-<a name="getAltitudeOST">
-<b>getAltitudeOST -</b>
+<a name="InitiateOST">
+<b>InitiateOST -</b>
 </a>
-Get altitude.
+Initiate a One-Shot measurement.
 <ul>
 <!---VER_SPEC #ANSIC#  DON'T CHANGE THIS LINE-->
-<br /><i>ANSIC prototype:</i> uint8_t getAltitudeOST(char* altitude)<br />
+<br /><i>ANSIC prototype:</i> uint8_t InitiateOST(void)<br />
 <!---VER_SPEC_END  DON'T CHANGE THIS LINE-->
-<li><i>altitude:char*</i> - Altitude in meter.</li>
+<li><i>Return value:uint8_t</i> - Error code.
+</li></ul><br />
+</li>
+<li>
+<a name="getData">
+<b>getData -</b>
+</a>
+Get Altimeter/Barometer and Temperature data.
+<ul>
+<!---VER_SPEC #ANSIC#  DON'T CHANGE THIS LINE-->
+<br /><i>ANSIC prototype:</i> uint8_t getData(void* buffer)<br />
+<!---VER_SPEC_END  DON'T CHANGE THIS LINE-->
+<li><i>buffer:void*</i> - Buffer : [0-1] temperature, [2-5] pressure/altitude</li>
 <li><i>Return value:uint8_t</i> - Error code.
 </li></ul><br />
 </li>

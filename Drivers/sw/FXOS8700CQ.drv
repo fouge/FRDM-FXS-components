@@ -106,6 +106,17 @@
 #define %'ModuleName'%.PARSE_COMMAND_ENABLED  0 /* set to 1 if method ParseCommand() is present, 0 otherwise */
 %endif %- ParseCommand
 
+#define 	MAGNETO_IS_USED		%MAGNETOMETER_USAGE
+
+#if MAGNETO_IS_USED==yes
+	#define RATE_UPDATE	(1)
+	#define %'ModuleName'_HYB_MODE			%'ModuleName'_M_HMS_BOTH
+	#define %'ModuleName'_HYB_MODE_INC		%'ModuleName'_HYB_AUTOINC
+#else
+	#define RATE_UPDATE (0)
+	#define %'ModuleName'_HYB_MODE			%'ModuleName'_M_HM_ACCELONLY
+#endif
+
 #define %'ModuleName'_STATUS_REG	0x00
 #define %'ModuleName'_F_SETUP 	0x09
 #define %'ModuleName'_INT_SOURCE	0x0C
@@ -124,20 +135,17 @@
 #define %'ModuleName'_ACTIVE_BIT_MASK 0x01
 #define %'ModuleName'_F_READ_BIT_MASK 0x02
 
-// CTRL_REG1 constants (when in hybrid mode, frequencies (sleep & wake) are divided by 2)
-#define %'ModuleName'_ASLP_RATE				%FXO_ASLP_RATE	/* Sample frequency when in sleep mode */
-#define %'ModuleName'_DR							%FXO_ODR	/* Output Data Rate ODR */
+/* CTRL_REG1 constants (when in hybrid mode, frequencies (sleep & wake) are divided by 2) */
+#define %'ModuleName'_ASLP_RATE				(%FXO_ASLP_RATE - (RATE_UPDATE<<6))	/* Sample frequency when in sleep mode */
+#define %'ModuleName'_DR							(%FXO_ODR - (RATE_UPDATE<<3))	/* Output Data Rate ODR */
 
 // CTRL_REG2 constants
-#define %'ModuleName'_MODS_NORMAL (0x0 << 0)		/* wake mode OSR */
-#define %'ModuleName'_SMODS_LOWPOWER (0x3 << 3)		/* sleep mode OSR */
+#define %'ModuleName'_MODS_NORMAL 	(0x0 << 0)		/* wake mode OSR */
+#define %'ModuleName'_SMODS_LOWPOWER 	(0x3 << 3)		/* sleep mode OSR */
 #define %'ModuleName'_CTRL_REG_2_MASK_RST (1<<6) 	/* software reset */
 
 // F_SETUP (FIFO setup)
-#define %'ModuleName'_FIFO_DISABLED (0x00 << 6)
-#define %'ModuleName'_FIFO_CIRCULAR (0x01 << 6)
-#define %'ModuleName'_FIFO_FILL (0x02 << 6)
-#define %'ModuleName'_FIFO_TRIGGER (0x03 << 6)
+#define %'ModuleName'_FIFO_MODE		%FIFO_MODE
 
 /* External 3-axis accelerometer data register addresses */
 #define %'ModuleName'_OUT_X_MSB 0x01
@@ -730,6 +738,7 @@ uint8_t %'ModuleName'%.%Init()
 {
 %CODE_BEGIN
 		uint8_t databyte;
+		volatile uint8_t val;
 
 %if defined(CalibrateX1g) | defined(CalibrateY1g) | defined(CalibrateZ1g)
   sCalValues.NxOff = InitialCalibration.NxOff;
@@ -748,8 +757,11 @@ uint8_t %'ModuleName'%.%Init()
 			reset the FXOS8700 and place it into Standby mode */
 	%'ModuleName'%.WriteReg8(%'ModuleName'_CTRL_REG_2, %'ModuleName'_CTRL_REG_2_MASK_RST);
 
-	%'ModuleName'%.Disable();
-	
+	/* Wait for the reset to be completed. */
+	do{
+		%@I2C@'ModuleName'%.ReadByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_2, &val);
+	} while(val && %'ModuleName'_CTRL_REG_2_MASK_RST); 
+		
 	
 	/* Control register 1
 	 * [7-6]: aslp_rate.
@@ -775,6 +787,57 @@ uint8_t %'ModuleName'%.%Init()
 	}
 	
 
+	/* write to FIFO setup register to setup FIFO use
+	 * [6-7] : FIFO Fill mode = 0b10
+	 * [0-5] : FIFO sample count watermark (not implemented)
+	 */
+	if (%'ModuleName'%.WriteReg8(%'ModuleName'_F_SETUP, %'ModuleName'_FIFO_MODE) != ERR_OK) {
+		return ERR_FAILED;
+	}
+	
+	
+	// TODO 	write to accelerometer control register 3 to
+	// 		enable Pulse function in Sleep mode
+	
+	
+	/* write to magnetometer control register 1
+	 * [7]: m_acal: auto calibration disabled
+	 * [6]: m_rst: no one-shot magnetic reset
+	 * [5]: m_ost: no one-shot magnetic measurement
+	 * [4-2]: m_os: 2x oversampling (for 50Hz) to reduce magnetometer noise
+	 * [1-0]: m_hms: select hybrid mode with accel and magnetometer active 
+	 */
+	if (FXO_WriteReg8(%'ModuleName'_M_CTRL_REG_1, %'ModuleName'_HYB_MODE) != ERR_OK) {
+		return ERR_FAILED;
+	}
+	
+	/* write to magnetometer control register 2
+	 * [7]: reserved
+	 * [6]: reserved
+	 * [5]: hyb_autoinc_mode=1 to map the magnetometer registers to follow the
+	 * accelerometer registers
+	 * [4]: m_maxmin_dis=0 to retain default min/max latching even though not used
+	 * [3]: m_maxmin_dis_ths=0
+	 * [2]: m_maxmin_rst=0
+	 * [1-0]: m_rst_cnt=00 to enable magnetic reset each cycle 
+	 */
+	if (%'ModuleName'%.WriteReg8(%'ModuleName'_M_CTRL_REG_2, %'ModuleName'_HYB_MODE_INC) != ERR_OK) {
+		return ERR_FAILED;
+	}
+	
+	/* write to XYZ_DATA_CFG register
+	 * [7]: reserved
+	 * [6]: reserved
+	 * [5]: reserved
+	 * [4]: hpf_out=1 (high pass filter)
+	 * [3]: reserved
+	 * [2]: reserved
+	 * [1-0]: fs=01 for accelerometer range of +/-4g range with 0.244mg/LSB
+	 */
+	if (%'ModuleName'%.WriteReg8(%'ModuleName'_XYZ_DATA_CFG, 0x11) != ERR_OK) {
+		return ERR_FAILED;
+	}
+	
   /* return %@I2C@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, %'ModuleName'_ACTIVE_BIT_MASK);*/ /* enable device */
   return ERR_OK;
 %CODE_END
@@ -794,11 +857,11 @@ uint8_t %'ModuleName'%.%GetRawAccelMagXYZ(int16_t *xyzijk)
 
 	static const uint8_t addr =  %'ModuleName'_OUT_X_MSB;
 	uint8_t rawdata[12];
-	volatile uint8_t res;
-	volatile uint8_t status;
+	uint8_t res;
 
 	res = %@I2C@'ModuleName'%.ReadAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)&addr, sizeof(addr), &rawdata[0], 12);
-	// Processing the data
+
+#if %'ModuleName'_CPU_IS_LITTLE_ENDIAN
 	// Big Endian to Small Endian
 	// copy the 14 bit accelerometer byte data into 16 bit words
 	xyzijk[0] = ((int16_t)(rawdata[0] << 8) | rawdata[1]);
@@ -808,6 +871,17 @@ uint8_t %'ModuleName'%.%GetRawAccelMagXYZ(int16_t *xyzijk)
 	xyzijk[3] = (int16_t)(rawdata[6] << 8) | rawdata[7];
 	xyzijk[4] = (int16_t)(rawdata[8] << 8) | rawdata[9];
 	xyzijk[5] = (int16_t)(rawdata[10] << 8) | rawdata[11];
+#else
+#warning Never tested 
+	// copy the 14 bit accelerometer byte data into 16 bit words
+	xyzijk[0] = (int16_t)(rawdata[0] | rawdata[1] << 8);
+	xyzijk[1] = (int16_t)(rawdata[2] | rawdata[3] << 8);
+	xyzijk[2] = (int16_t)(rawdata[4] | rawdata[5] << 8);
+	// copy the magnetometer byte data into 16 bit words
+	xyzijk[3] = (int16_t)(rawdata[6] | rawdata[7] << 8);
+	xyzijk[4] = (int16_t)(rawdata[8] | rawdata[9] << 8);
+	xyzijk[5] = (int16_t)(rawdata[10] | rawdata[11] << 8);
+#endif
 
 	return res;
 

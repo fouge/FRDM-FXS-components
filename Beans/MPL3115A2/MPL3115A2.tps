@@ -26,7 +26,7 @@
         <Line>Part is in Barometer mode</Line>
       </Hints>
       <Defines lines_count="2">
-        <Line>1</Line>
+        <Line>(1&lt;&lt;7)</Line>
         <Line>0</Line>
       </Defines>
     </Type>

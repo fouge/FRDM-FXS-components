@@ -220,13 +220,9 @@ LI.EXP {
 <b>Temperature offset</b></a> - The DIE_TEMP register is not factory trimmed, so returns around 0°C for about 20°C. With this offset can be trimmed.
 </li>
 <li>
-<a name="HYBRID">
-<b>Hybrid Mode</b></a> - Hybrid mode, both accelerometer and magnetometer sensors are active
-</li>
-<li>
 <a name="FXO_ODR">
 <b>Output Data Rate</b></a> - Output Data Rate (ODR) selection.<br><br>There are 4 options:<br />
-<ul><li><u>200 Hz</u>: Accelerometer Output Data Rate (ODR) set to 200Hz.</li><li><u>100 Hz</u>: Accelerometer Output Data Rate (ODR) set to 100Hz.</li><li><u>50 Hz</u>: Accelerometer Output Data Rate (ODR) set to 50Hz.</li><li><u>12.5 Hz</u>: Accelerometer Output Data Rate (ODR) set to 12.5Hz.</li></ul><br>
+<ul><li><u>200 Hz</u>: Sample Output Data Rate (ODR) set to 200Hz.</li><li><u>100 Hz</u>: Sample Output Data Rate (ODR) set to 100Hz.</li><li><u>50 Hz</u>: Sample Output Data Rate (ODR) set to 50Hz.</li><li><u>12.5 Hz</u>: Sample Output Data Rate (ODR) set to 12.5Hz.</li></ul><br>
 </li>
 <li>
 <a name="FXO_ASLP_RATE">
@@ -272,8 +268,14 @@ Interface to Utility functions
 </ul>
 </li>
 <li>
-<a name="MAG_SETTINGS">
-<b>Magnetometer Settings</b></a> - 
+<a name="FIFO_MODE">
+<b>FIFO Operating Mode</b></a> - 32-sample FIFO buffer operating mode. <br><br>There are 4 options:<br />
+<ul><li><u>Disabled</u>: FIFO is disabled.</li><li><u>Circular</u>: FIFO contains the most recent samples when overflowed (circular buffer). Oldest sample is discarded to be
+replaced by new sample.</li><li><u>Fill</u>: FIFO stops accepting new samples when overflowed.</li><li><u>Trigger</u>: FIFO trigger mode.</li></ul><br>
+</li>
+<li>
+<a name="MAGNETOMETER_USAGE">
+<b>Magnetometer</b></a> - Magnetometer data is measured. When activated, the part is in HYBRID mode.
 </li>
 <!--END_CDE_PROPERTIES-->
      </ul>

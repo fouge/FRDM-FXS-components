@@ -100,43 +100,82 @@
 %-    typedef int TMyInteger; 
 %-
 
+%if (CPUfamily = "Kinetis")
+#define %'ModuleName'_CPU_IS_LITTLE_ENDIAN 1 /* Cpu is little endian */
+%else
+#define %'ModuleName'_CPU_IS_LITTLE_ENDIAN 0 /* Cpu is big endian */
+%endif
+
+/* Register addresses */
+#define %'ModuleName'_OUT_P_MSB		0x01
+#define %'ModuleName'_CTRL_REG_1 	0x26
+#define %'ModuleName'_CTRL_REG_2	0x27
+
+#define %'ModuleName'_WHO_AM_I_REG	0x0C    /* Who am I register, set to 0xC4 by default */
+#define %'ModuleName'_WHO_AM_I_VAL	0xC4
+
+/* User defined constants */
 #define %'ModuleName'_I2C_ADDR		(%I2CSlaveAddress) /* I2C slave device address as set in the properties */
 #define %'ModuleName'_OST_MODE		%OST_MODE
-#define %'ModuleName'_ALT_MODE		(%ALT_MODE)
+#define %'ModuleName'_ALT_MODE		%ALT_MODE
 #define %'ModuleName'_OSR				%OSR
 #define %'ModuleName'_FIFO_MODE		%FIFO_MODE
 
-%if defined(TIME_STEP)
-#define %'ModuleName'_TIMESTEP	%TIME_STEP
-%endif
+/* Control reg 1 */
+#define %'ModuleName'_ACTIVE_BIT_MASK	(1)
+#define %'ModuleName'_RST_BIT_MASK 	(1<<2)
+#define %'ModuleName'_OST_BIT_MASK	(1<<1)
 
+/* When FIFO_MODE not activated, we can poll the sensor to see if there are data ready 
+ * or use the One Shot method. The One Shot method is used here */
 #if %'ModuleName'_FIFO_MODE
 #error FIFO not implemented yet.
 #define %'ModuleName'_SBYB_MODE	(1<<0) /* Active mode */
 #else
-#define %'ModuleName'_SBYB_MODE	0
+#define %'ModuleName'_SBYB_MODE	0		/* One shot measurement in standby mode */
 #endif
 
-/* Register addresses */
-#define %'ModuleName'_CTRL_REG_1 	0x26
-#define %'ModuleName'_CTRL_REG_2	0x27
-#define %'ModuleName'_WHO_AM_I  	0x0C    /* Who am I register, set to 0xC4 by default */
+/* Control reg 2 */
+%if defined(TIME_STEP)
+#define %'ModuleName'_TIMESTEP	%TIME_STEP
+%endif
 
-#define %'ModuleName'_RST_BIT_MASK 	(1<<2)
+/* User defined types */
+	typedef struct {
+		uint8_t msb;
+		uint8_t csb;
+		uint8_t lsb;
+		uint8_t t_msb;
+		uint8_t t_lsb;
+	} MPL_FORMATED_DATA;
+
+	typedef union {
+    uint8_t buf[5];
+    MPL_FORMATED_DATA get;
+  } MPL_DATA;
 
 
 %-BW_CUSTOM_USERTYPE_END
 
 %-BW_DEFINITION_START
 %-*****************************************************************************************************
-%-BW_METHOD_BEGIN getAltitudeOST
-%ifdef getAltitudeOST
-%include Common\MPL3115A2getAltitudeOST.inc
-uint8_t %'ModuleName'%.%getAltitudeOST(char* altitude);
-%define! Paraltitude
+%-BW_METHOD_BEGIN getData
+%ifdef getData
+%include Common\MPL3115A2getData.inc
+uint8_t %'ModuleName'%.%getData(void* buffer);
+%define! Parbuffer
 %define!  RetVal
-%endif  %-getAltitudeOST
-%-BW_METHOD_END getAltitudeOST
+%endif  %-getData
+%-BW_METHOD_END getData
+
+%-*****************************************************************************************************
+%-BW_METHOD_BEGIN InitiateOST
+%ifdef InitiateOST
+%include Common\MPL3115A2InitiateOST.inc
+uint8_t %'ModuleName'%.%InitiateOST();
+%define!  RetVal
+%endif  %-InitiateOST
+%-BW_METHOD_END InitiateOST
 
 %-*****************************************************************************************************
 %-BW_METHOD_BEGIN Init
@@ -197,19 +236,77 @@ uint8_t %'ModuleName'%.%WhoAmI(uint8_t *value);
 %-BW_INTERN_METHOD_DECL_END
 %-BW_IMPLEMENT_START
 %-*****************************************************************************************************
-%-BW_METHOD_BEGIN getAltitudeOST
-%ifdef getAltitudeOST
-%define! Paraltitude
+%-BW_METHOD_BEGIN getData
+%ifdef getData
+%define! Parbuffer
 %define! RetVal
-%include Common\MPL3115A2getAltitudeOST.inc
-uint8_t %'ModuleName'%.%getAltitudeOST(char* altitude)
+%include Common\MPL3115A2getData.inc
+uint8_t %'ModuleName'%.%getData(void* buffer)
 {
 %CODE_BEGIN
-	/******Method is not fully implemented if you can see this comment*******/
+	
+	static const uint8_t addr =  %'ModuleName'_OUT_P_MSB;
+	uint8_t res;
+
+	res = %@I2C_MPL_Interface@'ModuleName'%.ReadAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)&addr, sizeof(addr), &((MPL_DATA*)buffer)->buf[0], sizeof(MPL_DATA));
+
+	return res;
 %CODE_END
 }
-%endif %-getAltitudeOST
-%-BW_METHOD_END getAltitudeOST
+%endif %-getData
+%-BW_METHOD_END getData
+
+%-*****************************************************************************************************
+%-BW_METHOD_BEGIN InitiateOST
+%ifdef InitiateOST
+%define! RetVal
+%include Common\MPL3115A2InitiateOST.inc
+uint8_t %'ModuleName'%.%InitiateOST()
+{
+%CODE_BEGIN
+	uint8_t ctrl_reg1;
+	if(%@I2C_MPL_Interface@'ModuleName'%.ReadByteAddress8(%'ModuleName'%.I2C_ADDR, %'ModuleName'_CTRL_REG_1, &ctrl_reg1) != ERR_OK){
+		return ERR_FAILED;
+	}
+	
+	if(ctrl_reg1 & %'ModuleName'_ACTIVE_BIT_MASK){
+		/* Device in ACTIVE mode */
+		/* Not tested */
+		
+		/* Clear OST bit if set */
+		if(ctrl_reg1 & %'ModuleName'_OST_BIT_MASK){
+			ctrl_reg1 &= ~(%'ModuleName'_OST_BIT_MASK);
+			if(%@I2C_MPL_Interface@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, ctrl_reg1) != ERR_OK){
+				return ERR_FAILED;
+			}
+		}
+		
+		/* Initiate a measurement */
+		ctrl_reg1 |= %'ModuleName'_OST_BIT_MASK;
+		if(%@I2C_MPL_Interface@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, ctrl_reg1) != ERR_OK){
+			return ERR_FAILED;
+		}
+		
+	}
+	else{ 
+		/* Device in STANDBY mode */
+		
+		/* Initiate measurement */
+		ctrl_reg1 |= %'ModuleName'_OST_BIT_MASK;
+		if(%@I2C_MPL_Interface@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, ctrl_reg1) != ERR_OK){
+			return ERR_FAILED;
+		}
+		
+	}
+	
+	return ERR_OK;
+	
+	
+	
+%CODE_END
+}
+%endif %-InitiateOST
+%-BW_METHOD_END InitiateOST
 
 %-*****************************************************************************************************
 %-BW_METHOD_BEGIN Init
@@ -220,32 +317,38 @@ uint8_t %'ModuleName'%.%Init()
 {
 %CODE_BEGIN
 	uint8_t data;
-	uint8_t val;
+	volatile uint8_t val;
+
+	if(%'ModuleName'%.WhoAmI(&val) != ERR_OK){
+		return ERR_FAILED;
+	}
+	if (val != %'ModuleName'_WHO_AM_I_VAL) {
+		return ERR_FAILED;
+	}
 
 	/* Perform a reset */
 	data = %'ModuleName'_RST_BIT_MASK;
-	if(%@I2C_MPL_Interface@'ModuleName'%.WriteAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)%'ModuleName'_CTRL_REG_1, sizeof(%'ModuleName'_CTRL_REG_1), (uint8_t*)&data, sizeof(data)) != ERR_OK){
-		return ERR_FAILED;
-	}
+	%@I2C_MPL_Interface@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, data);
 	
 	/* Wait for the reset to be completed. */
 	do{
 		%@I2C_MPL_Interface@'ModuleName'%.ReadByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, &val);
-	} while(val & %'ModuleName'_RST_BIT_MASK == 0x00);
+	} while(val && %'ModuleName'_RST_BIT_MASK); 
 		
 	/* Sensor is in Standby mode*/
 	
 #ifdef %'ModuleName'_TIMESTEP
 	/* Setting the Time Step */
 	data = %'ModuleName'_TIMESTEP; /* After a reset, CTRL_REG_2 = 0 so we can write directly the desired value*/
-	if(%@I2C_MPL_Interface@'ModuleName'%.WriteAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)%'ModuleName'_CTRL_REG_2, sizeof(%'ModuleName'_CTRL_REG_2), (uint8_t*)&data, sizeof(data)) != ERR_OK){
+	if(%@I2C_MPL_Interface@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_2, data) != ERR_OK){
 		return ERR_FAILED;
 	}
 #endif
+	
 
 	/* Set in altimeter/barometer mode and set the Output Sample Rate (OSR) */
-	data |= %'ModuleName'_ALT_MODE | %'ModuleName'_OSR | %'ModuleName'_SBYB_MODE ; /* After a reset, CTRL_REG_1 = 0 so we can write directly the desired value */
-	if(%@I2C_MPL_Interface@'ModuleName'%.WriteAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)%'ModuleName'_CTRL_REG_1, sizeof(%'ModuleName'_CTRL_REG_1), (uint8_t*)&data, sizeof(data)) != ERR_OK){
+	data = %'ModuleName'_ALT_MODE | %'ModuleName'_OSR | %'ModuleName'_SBYB_MODE ; /* After a reset, CTRL_REG_1 = 0 so we can write directly the desired value */
+	if(%@I2C_MPL_Interface@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, data) != ERR_OK){
 		return ERR_FAILED;
 	}
 	
@@ -264,7 +367,7 @@ uint8_t %'ModuleName'%.%Init()
 uint8_t %'ModuleName'%.%WhoAmI(uint8_t *value)
 {
 %CODE_BEGIN
-	return %@I2C_MPL_Interface@'ModuleName'%.ReadByteAddress8(%'ModuleName'%.I2C_ADDR, %'ModuleName'%.WHO_AM_I, value);
+	return %@I2C_MPL_Interface@'ModuleName'%.ReadByteAddress8(%'ModuleName'%.I2C_ADDR, %'ModuleName'%.WHO_AM_I_REG, value);
 %CODE_END
 }
 %endif %-WhoAmI

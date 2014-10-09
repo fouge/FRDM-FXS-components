@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>FRDM_FXS_Components</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.freescale.processorexpert.core.expertprojectbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.freescale.processorexpert.core.expertprojectnature</nature>
+		<nature>com.freescale.processorexpert.cde.ui.CDENature</nature>
+	</natures>
+</projectDescription>

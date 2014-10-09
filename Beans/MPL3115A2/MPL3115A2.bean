@@ -244,10 +244,38 @@ http://www.cyrilfougeray.com</Copyright>
     </Method>
     <Method>
       <TMthdItem>
-        <Name>getAltitudeOST</Name>
-        <Symbol>getAltitudeOST</Symbol>
+        <Name>InitiateOST</Name>
+        <Symbol>InitiateOST</Symbol>
         <TypeSpec>typeMethod</TypeSpec>
-        <Hint>Get altitude.</Hint>
+        <Hint>Initiate a One-Shot measurement.</Hint>
+        <ItemLevel>BASIC</ItemLevel>
+        <EditLine>false</EditLine>
+        <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
+        <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
+        <UI_BoolStyle>DROPDOWN</UI_BoolStyle>
+        <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
+        <DefaultIndex>0</DefaultIndex>
+        <TextValueIndex>true</TextValueIndex>
+        <RuntimeProperty>false</RuntimeProperty>
+        <CanDelete>false</CanDelete>
+        <IconPopup>false</IconPopup>
+        <DefaultValue>true</DefaultValue>
+        <Popup>false</Popup>
+        <PublicMethod>true</PublicMethod>
+        <IsAssembler>false</IsAssembler>
+        <InDefinition>true</InDefinition>
+        <ReturnType>uint8_t</ReturnType>
+        <RetHint>Error code.</RetHint>
+        <ParamCount>0</ParamCount>
+        <Scope>PRIVATE</Scope>
+      </TMthdItem>
+    </Method>
+    <Method>
+      <TMthdItem>
+        <Name>getData</Name>
+        <Symbol>getData</Symbol>
+        <TypeSpec>typeMethod</TypeSpec>
+        <Hint>Get Altimeter/Barometer and Temperature data.</Hint>
         <ItemLevel>BASIC</ItemLevel>
         <EditLine>false</EditLine>
         <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
@@ -268,10 +296,10 @@ http://www.cyrilfougeray.com</Copyright>
         <RetHint>Error code.</RetHint>
         <ParamCount>1</ParamCount>
         <Parameter>
-          <ParName>altitude</ParName>
-          <ParType>char*</ParType>
+          <ParName>buffer</ParName>
+          <ParType>void*</ParType>
           <ParPassing>Value</ParPassing>
-          <ParHint>Altitude in meter.</ParHint>
+          <ParHint>Buffer : [0-1] temperature, [2-5] pressure/altitude</ParHint>
         </Parameter>
         <Scope>PRIVATE</Scope>
       </TMthdItem>
@@ -279,7 +307,7 @@ http://www.cyrilfougeray.com</Copyright>
   </MethodList>
   <Links>
     <Link>
-      <Item>getAltitudeOST</Item>
+      <Item>InitiateOST</Item>
       <EnblLink>OST_MODE</EnblLink>
     </Link>
   </Links>
