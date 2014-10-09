@@ -357,7 +357,7 @@ uint8_t %'ModuleName'%.%Init()
 	/* Wait for the reset to be completed. */
 	do{
 		%@I2C_FXAS_Interface@'ModuleName'%.ReadByteAddress8(%'ModuleName'_I2C_ADDR, FXA_CTRL_REG_1, &val);
-	}while(val && FXA_RST_BIT_MASK);
+	}while(val & FXA_RST_BIT_MASK);
 	
 	
 	/* Set Output Data Rate (ODR) and Ready mode */

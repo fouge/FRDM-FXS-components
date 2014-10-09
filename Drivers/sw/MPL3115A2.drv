@@ -333,7 +333,7 @@ uint8_t %'ModuleName'%.%Init()
 	/* Wait for the reset to be completed. */
 	do{
 		%@I2C_MPL_Interface@'ModuleName'%.ReadByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, &val);
-	} while(val && %'ModuleName'_RST_BIT_MASK); 
+	} while(val & %'ModuleName'_RST_BIT_MASK); 
 		
 	/* Sensor is in Standby mode*/
 	

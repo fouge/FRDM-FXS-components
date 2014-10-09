@@ -760,7 +760,7 @@ uint8_t %'ModuleName'%.%Init()
 	/* Wait for the reset to be completed. */
 	do{
 		%@I2C@'ModuleName'%.ReadByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_2, &val);
-	} while(val && %'ModuleName'_CTRL_REG_2_MASK_RST); 
+	} while(val & %'ModuleName'_CTRL_REG_2_MASK_RST); 
 		
 	
 	/* Control register 1
