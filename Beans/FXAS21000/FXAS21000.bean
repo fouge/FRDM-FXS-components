@@ -253,6 +253,34 @@ http://www.cyrilfougeray.com</Copyright>
         <Scope>PRIVATE</Scope>
       </TMthdItem>
     </Method>
+    <Method>
+      <TMthdItem>
+        <Name>Disable</Name>
+        <Symbol>Disable</Symbol>
+        <TypeSpec>typeMethod</TypeSpec>
+        <Hint>Put the sensor in Standby mode by clearing the ACTIVE bit in the CTRL register 1.</Hint>
+        <ItemLevel>BASIC</ItemLevel>
+        <EditLine>false</EditLine>
+        <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
+        <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
+        <UI_BoolStyle>DROPDOWN</UI_BoolStyle>
+        <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
+        <DefaultIndex>0</DefaultIndex>
+        <TextValueIndex>false</TextValueIndex>
+        <RuntimeProperty>false</RuntimeProperty>
+        <CanDelete>false</CanDelete>
+        <IconPopup>false</IconPopup>
+        <DefaultValue>true</DefaultValue>
+        <Popup>false</Popup>
+        <PublicMethod>true</PublicMethod>
+        <IsAssembler>false</IsAssembler>
+        <InDefinition>true</InDefinition>
+        <ReturnType>uint8_t</ReturnType>
+        <RetHint>Error code</RetHint>
+        <ParamCount>0</ParamCount>
+        <Scope>PRIVATE</Scope>
+      </TMthdItem>
+    </Method>
   </MethodList>
   <Links>
     <EmptySection_DummyValue />

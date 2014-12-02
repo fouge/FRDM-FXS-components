@@ -3,8 +3,8 @@
   <Header>
     <Name>FRDM_FXS_Components</Name>
     <SavedBy>fouge</SavedBy>
-    <ModificationStamp>9</ModificationStamp>
-    <Date>2014-10-08</Date>
+    <ModificationStamp>10</ModificationStamp>
+    <Date>2014-10-13</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.9.0.RT6_b1411-0502</PEversion>
   </Header>
@@ -29,7 +29,7 @@
     <UseExistingModules>true</UseExistingModules>
     <RenamePeripheries>false</RenamePeripheries>
     <Autodependency>true</Autodependency>
-    <ProjectCompNumb>28</ProjectCompNumb>
+    <ProjectCompNumb>30</ProjectCompNumb>
     <DelUnusedPreviouslyGenFiles>true</DelUnusedPreviouslyGenFiles>
     <GeneratedCodeFrozen>false</GeneratedCodeFrozen>
     <AssignInitComponentNameToPrph>true</AssignInitComponentNameToPrph>

@@ -230,6 +230,16 @@ LI.EXP {
 <ul><li><u>50 Hz</u>: Sample frequency when in sleep mode to 50 Hz</li><li><u>12.5 Hz</u>: Sample frequency when in sleep mode to 12.5 Hz</li><li><u>6.25 Hz</u>: Sample frequency when in sleep mode to 6.25 Hz</li><li><u>1.56 Hz</u>: Sample frequency when in sleep mode to 1.56 Hz</li></ul><br>
 </li>
 <li>
+<a name="FIFO_MODE">
+<b>FIFO Operating Mode</b></a> - 32-sample FIFO buffer operating mode.<br><br>There are 4 options:<br />
+<ul><li><u>Disabled</u>: FIFO is disabled.</li><li><u>Circular</u>: FIFO contains the most recent samples when overflowed (circular buffer). Oldest sample is discarded to be
+replaced by new sample.</li><li><u>Fill</u>: FIFO stops accepting new samples when overflowed.</li><li><u>Trigger</u>: FIFO trigger mode.</li></ul><br>
+</li>
+<li>
+<a name="MAGNETOMETER_USAGE">
+<b>Magnetometer</b></a> - Magnetometer data is measured. When activated, the part is in HYBRID mode.
+</li>
+<li>
 <a name="UseConstantOffsets">
 <b>Constant Offsets</b></a> - If enabled, constant offsets are added to the accelerometer values.<ul><li>
 <a name="xCalibrationOffset">
@@ -266,16 +276,6 @@ Interface to shell
 Interface to Utility functions
 </li>
 </ul>
-</li>
-<li>
-<a name="FIFO_MODE">
-<b>FIFO Operating Mode</b></a> - 32-sample FIFO buffer operating mode. <br><br>There are 4 options:<br />
-<ul><li><u>Disabled</u>: FIFO is disabled.</li><li><u>Circular</u>: FIFO contains the most recent samples when overflowed (circular buffer). Oldest sample is discarded to be
-replaced by new sample.</li><li><u>Fill</u>: FIFO stops accepting new samples when overflowed.</li><li><u>Trigger</u>: FIFO trigger mode.</li></ul><br>
-</li>
-<li>
-<a name="MAGNETOMETER_USAGE">
-<b>Magnetometer</b></a> - Magnetometer data is measured. When activated, the part is in HYBRID mode.
 </li>
 <!--END_CDE_PROPERTIES-->
      </ul>

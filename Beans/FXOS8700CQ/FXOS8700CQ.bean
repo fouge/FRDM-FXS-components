@@ -361,7 +361,7 @@
         <Name>Disable</Name>
         <Symbol>Disable</Symbol>
         <TypeSpec>typeMethod</TypeSpec>
-        <Hint>Disables the device with clearing the ACTIVE bit in the CTRL register 1</Hint>
+        <Hint>Put the sensor in Standby mode by clearing the ACTIVE bit in the CTRL register 1.</Hint>
         <ItemLevel>BASIC</ItemLevel>
         <EditLine>false</EditLine>
         <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>

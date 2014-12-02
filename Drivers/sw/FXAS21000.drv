@@ -125,6 +125,15 @@
 
 %-BW_DEFINITION_START
 %-*****************************************************************************************************
+%-BW_METHOD_BEGIN Disable
+%ifdef Disable
+%include Common\FXAS21000Disable.inc
+uint8_t %'ModuleName'%.%Disable();
+%define!  RetVal
+%endif  %-Disable
+%-BW_METHOD_END Disable
+
+%-*****************************************************************************************************
 %-BW_METHOD_BEGIN WhoAmI
 %ifdef WhoAmI
 %include Common\FXAS21000WhoAmI.inc
@@ -243,6 +252,31 @@ uint8_t %'ModuleName'%.%Init();
 %- List of internal methods headers
 %-BW_INTERN_METHOD_DECL_END
 %-BW_IMPLEMENT_START
+%-*****************************************************************************************************
+%-BW_METHOD_BEGIN Disable
+%ifdef Disable
+%define! RetVal
+%include Common\FXAS21000Disable.inc
+uint8_t %'ModuleName'%.%Disable()
+{
+%CODE_BEGIN
+  uint8_t val, res;
+
+  res = %@I2C_FXAS_Interface@'ModuleName'%.ReadByteAddress8(%'ModuleName'_I2C_ADDR, FXA_CTRL_REG_1, &val);
+  if (res!=ERR_OK) {
+    return res;
+  }
+
+  if(val & FXA_ACTIVE_MODE == 0)
+	  return ERR_OK;
+
+  val &= ~FXA_ACTIVE_MODE; /* disable device */
+  return %@I2C_FXAS_Interface@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, FXA_CTRL_REG_1, val);
+%CODE_END
+}
+%endif %-Disable
+%-BW_METHOD_END Disable
+
 %-*****************************************************************************************************
 %-BW_METHOD_BEGIN WhoAmI
 %ifdef WhoAmI
