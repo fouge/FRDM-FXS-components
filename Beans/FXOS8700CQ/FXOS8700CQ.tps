@@ -70,24 +70,37 @@
     <Type>
       <Type>TEnumSpec</Type>
       <Name>typePropertyFIFOMode</Name>
-      <Items lines_count="4">
-        <Line>Disabled</Line>
+      <Items lines_count="3">
         <Line>Circular</Line>
         <Line>Fill</Line>
         <Line>Trigger</Line>
       </Items>
-      <Hints lines_count="4">
-        <Line>FIFO is disabled.</Line>
+      <Hints lines_count="3">
         <Line>FIFO contains the most recent samples when overflowed (circular buffer). Oldest sample is discarded to be
 replaced by new sample.</Line>
         <Line>FIFO stops accepting new samples when overflowed.</Line>
         <Line>FIFO trigger mode.</Line>
       </Hints>
-      <Defines lines_count="4">
-        <Line>(0x00&lt;&lt;6)</Line>
+      <Defines lines_count="3">
         <Line>(0x01&lt;&lt;6)</Line>
         <Line>(0x02&lt;&lt;6)</Line>
         <Line>(0x03&lt;&lt;6)</Line>
+      </Defines>
+    </Type>
+    <Type>
+      <Type>TEnumSpec</Type>
+      <Name>typePropertyFIFORouting</Name>
+      <Items lines_count="2">
+        <Line>INT1</Line>
+        <Line>INT2</Line>
+      </Items>
+      <Hints lines_count="2">
+        <Line>Interrupt is routed to INT2 pin</Line>
+        <Line>Interrupt is routed to INT1 pin</Line>
+      </Hints>
+      <Defines lines_count="2">
+        <Line>(1&lt;&lt;6)</Line>
+        <Line>0</Line>
       </Defines>
     </Type>
   </Types>

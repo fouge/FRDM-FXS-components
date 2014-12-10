@@ -138,29 +138,94 @@
       </TEnumItem>
     </Property>
     <Property>
-      <TEnumItem>
-        <Name>FIFO Operating Mode</Name>
-        <Symbol>FIFO_MODE</Symbol>
-        <TypeSpec>typePropertyFIFOMode</TypeSpec>
-        <Hint>32-sample FIFO buffer operating mode.</Hint>
+      <TBoolGrupItem>
+        <Name>FIFO</Name>
+        <Symbol>FIFO_ENABLED</Symbol>
+        <TypeSpec>typeEnaDis</TypeSpec>
+        <Hint>Enable FIFO</Hint>
         <ItemLevel>BASIC</ItemLevel>
-        <EditLine>true</EditLine>
+        <BoldName>true</BoldName>
+        <EditLine>false</EditLine>
         <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
         <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
-        <UI_EnumStyle>COMBO</UI_EnumStyle>
-        <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
-        <DefaultIndex>0</DefaultIndex>
-        <TextValueIndex>true</TextValueIndex>
-        <RuntimeProperty>false</RuntimeProperty>
-        <CanDelete>false</CanDelete>
-        <IconPopup>false</IconPopup>
-        <TypeAssignment>BEAN_FILE</TypeAssignment>
-      </TEnumItem>
+        <UI_GroupStyle>GROUP</UI_GroupStyle>
+        <UI_Layout>DEFAULT</UI_Layout>
+        <UI_NumColumnsInWrappedLayout>4</UI_NumColumnsInWrappedLayout>
+        <UI_ValueSelectionStyle>CHECKBOX</UI_ValueSelectionStyle>
+        <Description>Enabled</Description>
+        <Expanded>Yes</Expanded>
+        <DefaultValue>true</DefaultValue>
+        <DefineSymbol>YES_NO</DefineSymbol>
+        <IfDisabled>setNOTHING</IfDisabled>
+        <Children>
+          <GrupItem>
+            <TEnumItem>
+              <Name>Default FIFO Operating Mode</Name>
+              <Symbol>FIFO_MODE</Symbol>
+              <TypeSpec>typePropertyFIFOMode</TypeSpec>
+              <Hint>32-sample FIFO buffer operating mode.</Hint>
+              <ItemLevel>BASIC</ItemLevel>
+              <EditLine>true</EditLine>
+              <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
+              <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
+              <UI_EnumStyle>COMBO</UI_EnumStyle>
+              <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
+              <DefaultIndex>0</DefaultIndex>
+              <TextValueIndex>true</TextValueIndex>
+              <RuntimeProperty>false</RuntimeProperty>
+              <CanDelete>false</CanDelete>
+              <IconPopup>false</IconPopup>
+              <TypeAssignment>BEAN_FILE</TypeAssignment>
+            </TEnumItem>
+          </GrupItem>
+          <GrupItem>
+            <TEnumItem>
+              <Name>FIFO Interrupt Routing</Name>
+              <Symbol>FIFO_INT_ROUTING</Symbol>
+              <TypeSpec>typePropertyFIFORouting</TypeSpec>
+              <Hint>Select the routing of the FIFO interrupt</Hint>
+              <ItemLevel>BASIC</ItemLevel>
+              <EditLine>true</EditLine>
+              <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
+              <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
+              <UI_EnumStyle>COMBO</UI_EnumStyle>
+              <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
+              <DefaultIndex>0</DefaultIndex>
+              <TextValueIndex>true</TextValueIndex>
+              <RuntimeProperty>false</RuntimeProperty>
+              <CanDelete>false</CanDelete>
+              <IconPopup>false</IconPopup>
+              <TypeAssignment>BEAN_FILE</TypeAssignment>
+            </TEnumItem>
+          </GrupItem>
+          <GrupItem>
+            <TInhrItem>
+              <Name>FIFO External Interrupt Pin</Name>
+              <Symbol>FIFO_ExtInt</Symbol>
+              <TypeSpec>FXOS8700CQ/ExtInt</TypeSpec>
+              <Hint>Select and set up the ExtInt component for FIFO Interrupt.</Hint>
+              <ItemLevel>BASIC</ItemLevel>
+              <EditLine>false</EditLine>
+              <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
+              <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
+              <UI_EnumStyle>COMBO</UI_EnumStyle>
+              <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
+              <DefaultIndex>-1</DefaultIndex>
+              <TextValueIndex>false</TextValueIndex>
+              <RuntimeProperty>false</RuntimeProperty>
+              <CanDelete>false</CanDelete>
+              <IconPopup>false</IconPopup>
+              <InhrBeanBaseName>FIFO_ExtInt</InhrBeanBaseName>
+              <ShowInheritedMethodsEventsInPrjTree>false</ShowInheritedMethodsEventsInPrjTree>
+            </TInhrItem>
+          </GrupItem>
+        </Children>
+      </TBoolGrupItem>
     </Property>
     <Property>
       <TBoolGrupItem>
         <Name>Magnetometer</Name>
-        <Symbol>MAGNETOMETER_USAGE</Symbol>
+        <Symbol>MAGNETO_ENABLED</Symbol>
         <TypeSpec>typeYesNo</TypeSpec>
         <Hint>Magnetometer data is measured. When activated, the part is in HYBRID mode.</Hint>
         <ItemLevel>BASIC</ItemLevel>
@@ -1499,6 +1564,40 @@
         <ReturnType>uint8_t</ReturnType>
         <RetHint>Error code, ERR_OK if everything is ok.</RetHint>
         <ParamCount>0</ParamCount>
+        <Scope>PRIVATE</Scope>
+      </TMthdItem>
+    </Method>
+    <Method>
+      <TMthdItem>
+        <Name>FlushFIFO</Name>
+        <Symbol>FlushFIFO</Symbol>
+        <TypeSpec>typeMethod</TypeSpec>
+        <Hint>Flush the data from the FIFO (burst out 3-axis x 32 2-byte data)</Hint>
+        <ItemLevel>BASIC</ItemLevel>
+        <EditLine>false</EditLine>
+        <UI_DisplayIn>TABLE_AND_GRAPHICAL_VIEW</UI_DisplayIn>
+        <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
+        <UI_BoolStyle>DROPDOWN</UI_BoolStyle>
+        <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
+        <DefaultIndex>0</DefaultIndex>
+        <TextValueIndex>true</TextValueIndex>
+        <RuntimeProperty>false</RuntimeProperty>
+        <CanDelete>false</CanDelete>
+        <IconPopup>false</IconPopup>
+        <DefaultValue>true</DefaultValue>
+        <Popup>false</Popup>
+        <PublicMethod>true</PublicMethod>
+        <IsAssembler>false</IsAssembler>
+        <InDefinition>true</InDefinition>
+        <ReturnType>uint8_t</ReturnType>
+        <RetHint>Error code</RetHint>
+        <ParamCount>1</ParamCount>
+        <Parameter>
+          <ParName>buf</ParName>
+          <ParType>uint8_t</ParType>
+          <ParPassing>Address</ParPassing>
+          <ParHint>Buffer to store the FIFO</ParHint>
+        </Parameter>
         <Scope>PRIVATE</Scope>
       </TMthdItem>
     </Method>

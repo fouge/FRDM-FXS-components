@@ -636,6 +636,19 @@ Initializes the device driver
 <li><i>Return value:uint8_t</i> - Error code, ERR_OK if everything is ok.
 </li></ul><br />
 </li>
+<li>
+<a name="FlushFIFO">
+<b>FlushFIFO -</b>
+</a>
+Flush the data from the FIFO (burst out 3-axis x 32 2-byte data)
+<ul>
+<!---VER_SPEC #ANSIC#  DON'T CHANGE THIS LINE-->
+<br /><i>ANSIC prototype:</i> uint8_t FlushFIFO(uint8_t *buf)<br />
+<!---VER_SPEC_END  DON'T CHANGE THIS LINE-->
+<li><i>buf: Pointer to uint8_t</i> - Buffer to store the FIFO</li>
+<li><i>Return value:uint8_t</i> - Error code
+</li></ul><br />
+</li>
 <!--END_CDE_METHODS-->
            </ul>
 <!---USERBEG DON'T CHANGE THIS LINE-->

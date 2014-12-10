@@ -230,13 +230,32 @@ LI.EXP {
 <ul><li><u>50 Hz</u>: Sample frequency when in sleep mode to 50 Hz</li><li><u>12.5 Hz</u>: Sample frequency when in sleep mode to 12.5 Hz</li><li><u>6.25 Hz</u>: Sample frequency when in sleep mode to 6.25 Hz</li><li><u>1.56 Hz</u>: Sample frequency when in sleep mode to 1.56 Hz</li></ul><br>
 </li>
 <li>
+<a name="FIFO_ENABLED">
+<b>FIFO</b></a> - Enable FIFO<ul><li>
 <a name="FIFO_MODE">
-<b>FIFO Operating Mode</b></a> - 32-sample FIFO buffer operating mode.<br><br>There are 4 options:<br />
-<ul><li><u>Disabled</u>: FIFO is disabled.</li><li><u>Circular</u>: FIFO contains the most recent samples when overflowed (circular buffer). Oldest sample is discarded to be
-replaced by new sample.</li><li><u>Fill</u>: FIFO stops accepting new samples when overflowed.</li><li><u>Trigger</u>: FIFO trigger mode.</li></ul><br>
+<b>Default FIFO Operating Mode</b>
+</a>
+32-sample FIFO buffer operating mode.
+<br><br>There are 3 options:<br />
+<ul><li><u>Circular</u>: FIFO contains the most recent samples when overflowed (circular buffer). Oldest sample is discarded to be
+replaced by new sample.</li><li><u>Fill</u>: FIFO stops accepting new samples when overflowed.</li><li><u>Trigger</u>: FIFO trigger mode.</li></ul><br></li>
+<li>
+<a name="FIFO_INT_ROUTING">
+<b>FIFO Interrupt Routing</b>
+</a>
+Select the routing of the FIFO interrupt
+<br><br>There are 2 options:<br />
+<ul><li><u>INT1</u>: Interrupt is routed to INT2 pin</li><li><u>INT2</u>: Interrupt is routed to INT1 pin</li></ul><br></li>
+<li>
+<a name="FIFO_ExtInt">
+<b>FIFO External Interrupt Pin</b>
+</a>
+Select and set up the ExtInt component for FIFO Interrupt.
+</li>
+</ul>
 </li>
 <li>
-<a name="MAGNETOMETER_USAGE">
+<a name="MAGNETO_ENABLED">
 <b>Magnetometer</b></a> - Magnetometer data is measured. When activated, the part is in HYBRID mode.
 </li>
 <li>

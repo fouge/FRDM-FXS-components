@@ -1,5 +1,2 @@
-%ifndef Shell
-  %set ParseCommand Selection never
-%else
-  %set ParseCommand Selection always
-%endif
+%-This is the Chg script. It is used for tests, verifications and
+%- validations of the component every time it is changed.
