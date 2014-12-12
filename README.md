@@ -3,6 +3,8 @@ FRDM-FXS-components
 
 Processor Expert components for some sensors on the FRDM-FXS-MULTI
 
+Please go to http://cyrilfougeray.com/2014/10/21/processor-expert-components-for-frdm-fxs-sensors/ for more information. 
+
 Handled sensors : 
 
  * FXAS21000 gyroscope : simple component (FIFO and interrupts not implemented)
