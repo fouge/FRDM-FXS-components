@@ -216,7 +216,7 @@
 %-BW_METHOD_BEGIN FlushFIFO
 %ifdef FlushFIFO
 %include Common\FXOS8700CQFlushFIFO.inc
-%'ModuleName'_uint8_t %'ModuleName'%.%FlushFIFO(uint8_t *buf);
+uint8_t %'ModuleName'%.%FlushFIFO(uint8_t *buf);
 %define! Parbuf
 %define!  RetVal
 %endif  %-FlushFIFO
@@ -787,20 +787,21 @@ static uint8_t PrintHelp(const %@Shell@'ModuleName'%.StdIOType *io) {
 %define! Parbuf
 %define! RetVal
 %include Common\FXOS8700CQFlushFIFO.inc
-%'ModuleName'_uint8_t %'ModuleName'%.%FlushFIFO(uint8_t *buf)
+uint8_t %'ModuleName'%.%FlushFIFO(uint8_t *buf)
 {
 %CODE_BEGIN
-  uint8_t val, res = ERR_OK;
+  uint8_t val;
   static const uint8_t addr =  %'ModuleName'_OUT_X_MSB;
   
+  /* TODO add timeout */
+  
   /* Read the status register F_STATUS to clear the Overflow flag */ 
-  res |= %@I2C@'ModuleName'%.ReadByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_STATUS_REG, &val); 
+  while(%@I2C@'ModuleName'%.ReadByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_STATUS_REG, &val) != ERR_OK); 
     
   /* Burst out 14-bit data */
-  res |= %@I2C@'ModuleName'%.ReadAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)&addr, sizeof(addr), &buf[0], %'ModuleName'_FIFO_BURSTREAD_SIZE);
+  while(%@I2C@'ModuleName'%.ReadAddress(%'ModuleName'_I2C_ADDR, (uint8_t*)&addr, sizeof(addr), &buf[0], %'ModuleName'_FIFO_BURSTREAD_SIZE) != ERR_OK);
   
-  return res;
-
+  return ERR_OK;
 %CODE_END
 }
 %endif %-FlushFIFO
