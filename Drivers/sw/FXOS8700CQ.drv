@@ -38,9 +38,9 @@
 %- readyCPU ...
 %- readyDEVICE ...
 %-
-%define DriverAuthor  Erich Styger
-%define DriverVersion 01.00
-%define DriverDate    03/31/2013
+%define DriverAuthor  Erich Styger, Cyril Fougeray
+%define DriverVersion 01.5
+%define DriverDate    12/12/2014
 %-
 %-
 %-BW_METHOD_MACROS_START
@@ -106,17 +106,14 @@
 #define %'ModuleName'%.PARSE_COMMAND_ENABLED  0 /* set to 1 if method ParseCommand() is present, 0 otherwise */
 %endif %- ParseCommand
 
-#define   MAGNETO_ENABLED   %MAGNETO_ENABLED
-#define  	FIFO_ENABLED   		%FIFO_ENABLED
-
-#if MAGNETO_ENABLED==yes
+%if %MAGNETO_ENABLED=='yes'
   #define RATE_UPDATE (1)
   #define %'ModuleName'_HYB_MODE      %'ModuleName'_M_HMS_BOTH
   #define %'ModuleName'_HYB_MODE_INC    %'ModuleName'_HYB_AUTOINC
-#else
+%else
   #define RATE_UPDATE (0)
   #define %'ModuleName'_HYB_MODE      %'ModuleName'_M_HM_ACCELONLY
-#endif
+%endif
 
 #define %'ModuleName'_STATUS_REG  0x00
 #define %'ModuleName'_F_SETUP   0x09
@@ -146,16 +143,16 @@
 #define %'ModuleName'_CTRL_REG_2_MASK_RST (1<<6)  /* software reset */
 
 /* F_SETUP (FIFO setup) */
-#if FIFO_ENABLED==Enabled
+%if %FIFO_ENABLED=='yes'
 #define %'ModuleName'_FIFO_MODE   					%FIFO_MODE						/* Set up FIFO mode (Fill/Circular/Trigger) */
 #define %'ModuleName'_FIFO_INT_EN						(1<<6)								/* Enable interruption from FIFO */
 #define %'ModuleName'_FIFO_INT_ROUT					%FIFO_INT_ROUTING			/* Set up int routing (INT1 or INT2) for FIFO interrupt */
 #define %'ModuleName'_FIFO_BURSTREAD_SIZE		192										/* Burst read when 14-bit data */
-#else
+%else
 #define %'ModuleName'_FIFO_MODE   		0
 #define %'ModuleName'_FIFO_INT_EN			0
 #define %'ModuleName'_FIFO_INT_ROUT		
-#endif
+%endif
 
 /* Interrupts */
 #define %'ModuleName'_INT_ENABLE	(%'ModuleName'_FIFO_INT_EN)

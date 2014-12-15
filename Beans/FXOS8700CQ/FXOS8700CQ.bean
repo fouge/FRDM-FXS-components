@@ -141,7 +141,7 @@
       <TBoolGrupItem>
         <Name>FIFO</Name>
         <Symbol>FIFO_ENABLED</Symbol>
-        <TypeSpec>typeEnaDis</TypeSpec>
+        <TypeSpec>typeYesNo</TypeSpec>
         <Hint>Enable FIFO</Hint>
         <ItemLevel>BASIC</ItemLevel>
         <BoldName>true</BoldName>
@@ -153,7 +153,7 @@
         <UI_NumColumnsInWrappedLayout>4</UI_NumColumnsInWrappedLayout>
         <UI_ValueSelectionStyle>CHECKBOX</UI_ValueSelectionStyle>
         <Description>Enabled</Description>
-        <Expanded>Yes</Expanded>
+        <Expanded>No</Expanded>
         <DefaultValue>true</DefaultValue>
         <DefineSymbol>YES_NO</DefineSymbol>
         <IfDisabled>setNOTHING</IfDisabled>
