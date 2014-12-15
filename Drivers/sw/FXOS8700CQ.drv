@@ -913,7 +913,7 @@ uint8_t %'ModuleName'%.%Init()
     return ERR_FAILED;
   }
   
-  
+%if %FIFO_ENABLED=='yes'
   /* write 0100 0000 = 0x40 to Interrupt Enable Register (Control register 4) to
 	* enable interrupts (data ready)
 	* [7] : Auto-sleep/wake interrupt = 0 TODO Sleep mode
@@ -943,6 +943,7 @@ uint8_t %'ModuleName'%.%Init()
 	if (%'ModuleName'%.WriteReg8(%'ModuleName'_CTRL_REG_5, %'ModuleName'_FIFO_INT_ROUT) != ERR_OK) {
 		return ERR_FAILED;
 	}
+%endif
   
   /* return %@I2C@'ModuleName'%.WriteByteAddress8(%'ModuleName'_I2C_ADDR, %'ModuleName'_CTRL_REG_1, %'ModuleName'_ACTIVE_BIT_MASK);*/ /* enable device */
   return ERR_OK;

@@ -1579,12 +1579,12 @@
         <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
         <UI_BoolStyle>DROPDOWN</UI_BoolStyle>
         <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
-        <DefaultIndex>0</DefaultIndex>
+        <DefaultIndex>1</DefaultIndex>
         <TextValueIndex>true</TextValueIndex>
         <RuntimeProperty>false</RuntimeProperty>
         <CanDelete>false</CanDelete>
         <IconPopup>false</IconPopup>
-        <DefaultValue>true</DefaultValue>
+        <DefaultValue>false</DefaultValue>
         <Popup>false</Popup>
         <PublicMethod>true</PublicMethod>
         <IsAssembler>false</IsAssembler>
@@ -1669,7 +1669,10 @@
     </Event>
   </EventList>
   <Links>
-    <EmptySection_DummyValue />
+    <Link>
+      <Item>FlushFIFO</Item>
+      <EnblLink>FIFO_ENABLED</EnblLink>
+    </Link>
   </Links>
 </Bean>
 
