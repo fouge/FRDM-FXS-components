@@ -152,8 +152,8 @@
         <UI_Layout>DEFAULT</UI_Layout>
         <UI_NumColumnsInWrappedLayout>4</UI_NumColumnsInWrappedLayout>
         <UI_ValueSelectionStyle>CHECKBOX</UI_ValueSelectionStyle>
-        <Description>Enabled</Description>
-        <Expanded>No</Expanded>
+        <Description>yes</Description>
+        <Expanded>Yes</Expanded>
         <DefaultValue>true</DefaultValue>
         <DefineSymbol>YES_NO</DefineSymbol>
         <IfDisabled>setNOTHING</IfDisabled>
@@ -1579,12 +1579,12 @@
         <UI_DisplayExtraText>DISPLAY_AUTO_POSITION</UI_DisplayExtraText>
         <UI_BoolStyle>DROPDOWN</UI_BoolStyle>
         <TypeSpecNameChangeAble>false</TypeSpecNameChangeAble>
-        <DefaultIndex>1</DefaultIndex>
+        <DefaultIndex>0</DefaultIndex>
         <TextValueIndex>true</TextValueIndex>
         <RuntimeProperty>false</RuntimeProperty>
         <CanDelete>false</CanDelete>
         <IconPopup>false</IconPopup>
-        <DefaultValue>false</DefaultValue>
+        <DefaultValue>true</DefaultValue>
         <Popup>false</Popup>
         <PublicMethod>true</PublicMethod>
         <IsAssembler>false</IsAssembler>
