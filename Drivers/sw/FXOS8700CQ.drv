@@ -107,12 +107,13 @@
 %endif %- ParseCommand
 
 %if %MAGNETO_ENABLED=='yes'
-  #define RATE_UPDATE (1)
-  #define %'ModuleName'_HYB_MODE      %'ModuleName'_M_HMS_BOTH
-  #define %'ModuleName'_HYB_MODE_INC    %'ModuleName'_HYB_AUTOINC
+#define MAGNETO_IS_USED
+#define RATE_UPDATE (1)
+#define %'ModuleName'_HYB_MODE      %'ModuleName'_M_HMS_BOTH
+#define %'ModuleName'_HYB_MODE_INC    %'ModuleName'_HYB_AUTOINC
 %else
-  #define RATE_UPDATE (0)
-  #define %'ModuleName'_HYB_MODE      %'ModuleName'_M_HM_ACCELONLY
+#define RATE_UPDATE (0)
+#define %'ModuleName'_HYB_MODE      %'ModuleName'_M_HM_ACCELONLY
 %endif
 
 #define %'ModuleName'_STATUS_REG  0x00
@@ -144,6 +145,7 @@
 
 /* F_SETUP (FIFO setup) */
 %if %FIFO_ENABLED=='yes'
+#define FIFO_IS_USED
 #define %'ModuleName'_FIFO_MODE   					%FIFO_MODE						/* Set up FIFO mode (Fill/Circular/Trigger) */
 #define %'ModuleName'_FIFO_INT_EN						(1<<6)								/* Enable interruption from FIFO */
 #define %'ModuleName'_FIFO_INT_ROUT					%FIFO_INT_ROUTING			/* Set up int routing (INT1 or INT2) for FIFO interrupt */
